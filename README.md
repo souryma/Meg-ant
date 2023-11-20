@@ -27,8 +27,7 @@ http://ants.aichallenge.org/strategy_guide.php
 
 Classes de fourmis :
 - Exploratrice : vas à la nourriture la plus proche OU va tout droit/suis les bords
-- Gardienne : Reste autours de la fourmilière (en cercle) et 
-## s'éloigne de plus en plus si il n'y a pas d'ennemis autours 
+- Gardienne : Reste autours de la fourmilière (en cercle) et *s'éloigne de plus en plus si il n'y a pas d'ennemis autours*
 - Attaquante : Se me en formation avec d'autres attaquantes et va à la fourmilière ennemi la plus proche
 
 Si nouvelle fourmis nait : elle devient gardien
