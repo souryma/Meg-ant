@@ -36,6 +36,7 @@ void Bot::makeMoves()
 
 	// TODO find a way to split exploring ants and defending ants
 
+	Location closestFood;
 	//Make every exploring ants go the closest food
 	for (int ant = 0; ant < (int)state.exploringAnts.size(); ant++)
 	{
@@ -45,9 +46,15 @@ void Bot::makeMoves()
 
 			if (!state.grid[loc.row][loc.col].isWater)
 			{
-				state.bug << "Closest food : " << getClosestFood(state.myAnts[ant]) << endl;
+				closestFood = getClosestFood(state.myAnts[ant]);
+				// check if food is not already targeted by an ant
+				if (!isFoodAlreadyTargeted(closestFood)) 
+				{
+					state.targetedFoods.push_back(closestFood);
+				}
+				state.bug << "Closest food : " << closestFood << endl;
 
-				// TODO get shorest path between ants and closest food
+				// TODO get shorest path between ants and closest food (A*?)
 
 				state.makeMove(state.myAnts[ant], d);
 				break;
@@ -63,15 +70,31 @@ Location Bot::getClosestFood(Location ant) {
 	Location closestFood = Location(0, 0); // Returns this position of no food is found
 
 	// iterate on each food in the current state
-	for (int i = 0; i < state.food.size(); i++) {
+	for (int i = 0; i < state.food.size(); i++)
+	{
 		smallestDistance = min(smallestDistance, state.distance(ant, state.food[i]));
-		if (smallestDistance != previousSmallestDistance) {
+		if (smallestDistance != previousSmallestDistance)
+		{
 			previousSmallestDistance = smallestDistance;
 			closestFood = state.food[i];
 		}
 	}
 
 	return closestFood;
+}
+
+bool Bot::isFoodAlreadyTargeted(Location food)
+{
+	bool answer = false;
+
+	for (int i = 0; i < state.targetedFoods.size(); i++)
+	{
+		if (food.col == state.targetedFoods[i].col && food.row == state.targetedFoods[i].row) {
+			answer = true;
+		}
+	}
+
+	return answer;
 }
 
 //finishes the turn

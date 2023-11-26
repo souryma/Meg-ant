@@ -18,6 +18,7 @@ struct Bot
     void endTurn();     //indicates to the engine that it has made its moves
 
     Location getClosestFood(Location ant); // returns the closest food location of an ant
+    bool isFoodAlreadyTargeted(Location food); //returns true if a food is already targeted by an ant
 };
 
 #endif //BOT_H_
