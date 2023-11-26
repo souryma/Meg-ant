@@ -16,6 +16,8 @@ struct Bot
 
     void makeMoves();   //makes moves for a single turn
     void endTurn();     //indicates to the engine that it has made its moves
+
+    Location getClosestFood(Location ant); // returns the closest food location of an ant
 };
 
 #endif //BOT_H_
