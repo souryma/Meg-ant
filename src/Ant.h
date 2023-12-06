@@ -1,8 +1,10 @@
 #pragma once
-
+#include "Location.h"
 
 class Ant
 {
+private:
+	Location _Location;
 public:
 	bool IsInDanger;
 	bool IsReallyInDanger;
