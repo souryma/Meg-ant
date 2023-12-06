@@ -8,7 +8,7 @@ private:
 public:
 	bool IsInDanger;
 	bool IsReallyInDanger;
-	int nemyCount;
+	int EnemyCount;
 
 public:
 	void Attack();

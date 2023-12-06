@@ -2,31 +2,37 @@
 #define SQUARE_H_
 
 #include <vector>
+#include "Direction.h"
 
 /*
     struct for representing a square in the grid.
 */
 struct Square
 {
-    bool isVisible, isWater, isHill, isFood;
+public:
+    bool isVisible;
+    bool isWater;
+    bool isHill;
+    bool isFood;
+
     int ant, hillPlayer;
     std::vector<int> deadAnts;
 
-    Square()
-    {
-        isVisible = isWater = isHill = isFood = 0;
-        ant = hillPlayer = -1;
-    };
+    //======================= FOR A*
+    int F; // only for food
+
+    //=======================
+    bool IsTargeted;
+    bool IsReached;
+    bool IsReachedByMyBot;
+
+public:
+    Square();
 
     //resets the information for the square except water information
-    void reset()
-    {
-        isVisible = 0;
-        isHill = 0;
-        isFood = 0;
-        ant = hillPlayer = -1;
-        deadAnts.clear();
-    };  
+    void reset();
+
+    EDirection GetDirectionTo(Square S);
 };
 
 #endif //SQUARE_H_

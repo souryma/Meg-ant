@@ -1,6 +1,26 @@
 # Meg-ant
 Repository for google ia ant project 
 
+# Coding style
+
+Tous les membres de classes (y compris les méthodes) commencent par une majuscule. En plus de ça les membres privés débuteront avec un underscore.
+
+Par exemple
+
+```c++
+class Ant
+{
+private:
+    bool _Attr1;
+    
+public:
+    int Attr2;
+
+protected:
+    Ant();
+};
+```
+
 ## Stratégie projet ants :
 
 Garder des fourmis proches de la fourmilière 
