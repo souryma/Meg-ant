@@ -1,19 +1,29 @@
 #pragma once
 #include "Location.h"
+#include "Direction.h"
 
 class Ant
 {
 private:
-	Location _Location;
+
 public:
+	Location Location;
+	bool IsAttacking;
+	bool IsDefending;
+	bool IsExploring;
+	bool IsDancing;
 	bool IsInDanger;
 	bool IsReallyInDanger;
 	int EnemyCount;
+	// True if the ant has moved this turn
+	bool HasMoved;
 
 public:
+	Ant();
 	void Attack();
 	void Defend();
 	void Explore();
-	void Danse();
+	// Make the ant switch between two squares
+	EDirection Danse(EDirection direction);
 };
 
