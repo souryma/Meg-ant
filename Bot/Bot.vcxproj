@@ -133,11 +133,13 @@
     <ClInclude Include="..\src\Square.h" />
     <ClInclude Include="..\src\State.h" />
     <ClInclude Include="..\src\Timer.h" />
+    <ClInclude Include="Ant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Bot.cc" />
     <ClCompile Include="..\src\MyBot.cc" />
     <ClCompile Include="..\src\State.cc" />
+    <ClCompile Include="Ant.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
