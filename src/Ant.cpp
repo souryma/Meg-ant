@@ -1,5 +1,4 @@
 #include "Ant.h"
-#include "Direction.h"
 
 Ant::Ant() {
 	IsAttacking = false;
@@ -44,5 +43,5 @@ EDirection Ant::Danse(EDirection direction)
 	HasMoved = true;
 
 	previousDirection = direction;
-	return 
+	return EAST;
 }
