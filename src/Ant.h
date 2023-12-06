@@ -5,6 +5,8 @@
 class Ant
 {
 private:
+	bool _DancingState = false;
+	EDirection _PreviousDirection = NORTH;
 
 public:
 	Location Location;
@@ -24,6 +26,6 @@ public:
 	void Defend();
 	void Explore();
 	// Make the ant switch between two squares
-	EDirection Danse(EDirection direction);
+	EDirection Dance(EDirection direction);
 };
 

@@ -11,37 +11,36 @@ Ant::Ant() {
 	EnemyCount = 0;
 }
 
-bool dancingState = false;
-EDirection previousDirection = NORTH;
-
 // Make the ant switch between two squares in the desired direction
-EDirection Ant::Danse(EDirection direction)
+EDirection Ant::Dance(EDirection direction)
 {
 	IsDancing = true;
 
-	if (direction != previousDirection)
+	// If the direction of dance is different than before, we reset dancing state
+	if (direction != _PreviousDirection)
 	{
-		dancingState = true;
+		_DancingState = true;
 	}
 
+	// If dancing state is true, the ant must dance in the direction, if false, opposite direction
 	switch (direction) {
-	case 0: // N
-		Location.col = dancingState ? Location.col - 1 : Location.col + 1;
+	case NORTH:
+		direction = _DancingState ? direction : SOUTH;
 		break;
-	case 1: // E
-		Location.col = dancingState ? Location.row + 1 : Location.row - 1;
+	case EAST:
+		direction = _DancingState ? direction : WEST;
 		break;
-	case 2: // S
-		Location.col = dancingState ? Location.col + 1 : Location.col - 1;
+	case SOUTH:
+		direction = _DancingState ? direction : NORTH;
 		break;
-	case 3: // W
-		Location.col = dancingState ? Location.row - 1 : Location.row + 1;
+	case WEST:
+		direction = _DancingState ? direction : EAST;
 		break;
 	}
-	dancingState = !dancingState;
 
+	_DancingState = !_DancingState;
 	HasMoved = true;
+	_PreviousDirection = direction;
 
-	previousDirection = direction;
-	return EAST;
+	return direction;
 }
