@@ -26,7 +26,7 @@ struct Square
         isFood = 0;
         ant = hillPlayer = -1;
         deadAnts.clear();
-    };
+    };  
 };
 
 #endif //SQUARE_H_

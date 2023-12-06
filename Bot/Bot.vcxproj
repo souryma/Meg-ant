@@ -129,15 +129,24 @@
   <ItemGroup>
     <ClInclude Include="..\src\Bot.h" />
     <ClInclude Include="..\src\Bug.h" />
+    <ClInclude Include="..\src\ExplorationManager.h" />
     <ClInclude Include="..\src\Location.h" />
     <ClInclude Include="..\src\Square.h" />
     <ClInclude Include="..\src\State.h" />
     <ClInclude Include="..\src\Timer.h" />
+    <ClInclude Include="BotController.h" />
+    <ClInclude Include="Pathfinder.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Bot.cc" />
     <ClCompile Include="..\src\MyBot.cc" />
     <ClCompile Include="..\src\State.cc" />
+    <ClCompile Include="BotController.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Bot.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
