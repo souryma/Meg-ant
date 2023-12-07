@@ -9,7 +9,7 @@ private:
 	EDirection _PreviousDirection = NORTH;
 
 public:
-	Location Location;
+	Location AntLocation;
 	bool IsAttacking;
 	bool IsDefending;
 	bool IsExploring;
@@ -21,7 +21,7 @@ public:
 	bool HasMoved;
 
 public:
-	Ant();
+	Ant(Location location);
 	void Attack();
 	void Defend();
 	void Explore();

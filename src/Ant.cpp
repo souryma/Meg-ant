@@ -1,6 +1,6 @@
 #include "Ant.h"
 
-Ant::Ant() {
+Ant::Ant(Location location) {
 	IsAttacking = false;
 	IsDefending = false;
 	IsExploring = false;
@@ -9,6 +9,8 @@ Ant::Ant() {
 	IsInDanger = false;
 	IsReallyInDanger = false;
 	EnemyCount = 0;
+	HasMoved = false;
+	AntLocation = location;
 }
 
 // Make the ant switch between two squares in the desired direction
