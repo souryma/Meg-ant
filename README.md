@@ -54,5 +54,15 @@ Si nouvelle fourmis nait : elle devient gardien
 Si il y a trop de gardien : un des gradien devient explorateur
 Après un certain délais : On créé une formation de fourmis attaquantes depuis les fourmis gardiennes
 
+# TODO LIST
 
+- [ ] A* 
+- [ ] Optimisation du remplissage des tableaux (food, hills, enemy)
+- [ ] Regarder pour le debug
+- [ ] Implémenter d'autres types de distance (peut être)
+- [ ] Initialiser une classe pour la stratégie (AntManager)
+	- [ ] Attaquer
+	- [ ] Défendre
+	- [ ] Danser
+	- [ ] Explorer
 
