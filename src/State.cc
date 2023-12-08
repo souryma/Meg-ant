@@ -99,6 +99,8 @@ void State::updateVisionInformation()
                 {
                     grid[nLoc.row][nLoc.col].isVisible = 1;
                     locQueue.push(nLoc);
+
+                    // TODO : here we should fill the state.food / state.enemy / ... 
                 }
                 visited[nLoc.row][nLoc.col] = 1;
             }
