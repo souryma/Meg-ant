@@ -6,11 +6,11 @@
 class Ant
 {
 private:
-	bool dancingState = false;
-	EDirection previousDirection = NORTH;
+	bool _DancingState = false;
+	EDirection _PreviousDirection = NORTH;
 
 public:
-	Location Location;
+	Location AntLocation;
 	bool IsAttacking;
 	bool IsDefending;
 	bool IsExploring;
@@ -23,11 +23,11 @@ public:
 
 
 public:
-	Ant();
+	Ant(Location location);
 	void Attack();
 	void Defend();
 	void Explore();
 	// Make the ant switch between two squares
-	EDirection Danse(EDirection direction);
+	EDirection Dance(EDirection direction);
 };
 
