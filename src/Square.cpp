@@ -7,6 +7,8 @@ Square::Square()
 
 	IsReached = false;
 	IsReachedByMyBot = false;
+
+    ExplorationWeight = 100;
 }
 
 void Square::reset()
@@ -19,7 +21,18 @@ void Square::reset()
 }
 
 
-EDirection GetDirectionTo(Square S)
+EDirection Square::GetDirectionTo(Square S)
 {
-
+    if (Row == S.Row)
+    {
+        if (Row + 1 == S.Row) return EDirection::EAST;
+        if (Row - 1 == S.Row) return EDirection::WEST;
+        return S.Row == 0 ? EDirection::EAST : EDirection::WEST;
+    }
+    else
+    {
+        if (Col + 1 == S.Col) return EDirection::NORTH;
+        if (Col - 1 == S.Col) return EDirection::SOUTH;
+        return S.Col == 0 ? EDirection::NORTH : EDirection::SOUTH;
+    }
 }

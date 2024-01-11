@@ -33,16 +33,16 @@
     <ClInclude Include="..\src\Timer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="BotController.h">
+    <ClInclude Include="..\src\Ant.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ExplorationManager.h">
+    <ClInclude Include="..\src\Direction.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="..\src\AntManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Pathfinder.h">
+    <ClInclude Include="..\src\Shared.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,16 +56,14 @@
     <ClCompile Include="..\src\State.cc">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="BotController.cpp">
+    <ClCompile Include="..\src\Ant.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Pathfinder.cpp">
+    <ClCompile Include="..\src\Square.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Bot.rc">
-      <Filter>Fichiers de ressources</Filter>
-    </ResourceCompile>
+    <ClCompile Include="..\src\AntManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

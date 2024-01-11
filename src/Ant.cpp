@@ -11,9 +11,6 @@ Ant::Ant() {
 	EnemyCount = 0;
 }
 
-bool dancingState = false;
-EDirection previousDirection = NORTH;
-
 // Make the ant switch between two squares in the desired direction
 EDirection Ant::Danse(EDirection direction)
 {

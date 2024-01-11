@@ -1,5 +1,4 @@
-#ifndef BOT_H_
-#define BOT_H_
+#pragma once
 
 #include "State.h"
 
@@ -20,5 +19,3 @@ struct Bot
     Location getClosestFood(Location ant); // returns the closest food location of an ant
     bool isFoodAlreadyTargeted(Location food); //returns true if a food is already targeted by an ant
 };
-
-#endif //BOT_H_

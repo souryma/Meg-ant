@@ -1,10 +1,9 @@
-#ifndef BUG_H_
-#define BUG_H_
+#pragma once
 
 #include <fstream>
 
 #ifndef DEBUG
-    //#define DEBUG
+    #define DEBUG
 #endif
 
 /*
@@ -55,14 +54,12 @@ inline Bug& operator<<(Bug &bug, std::ostream& (*manipulator)(std::ostream&))
 };
 
 //output function
-template <class T>
-inline Bug& operator<<(Bug &bug, const T &t)
+template <typename T>
+inline Bug& operator<<(Bug &bug, const T& t)
 {
-    #ifdef DEBUG
-        bug.file << t;
-    #endif
+#ifdef DEBUG
+    bug.file << t;
+#endif
 
     return bug;
 };
-
-#endif //BUG_H_

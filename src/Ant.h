@@ -1,10 +1,13 @@
 #pragma once
+
 #include "Location.h"
 #include "Direction.h"
 
 class Ant
 {
 private:
+	bool dancingState = false;
+	EDirection previousDirection = NORTH;
 
 public:
 	Location Location;
@@ -17,6 +20,7 @@ public:
 	int EnemyCount;
 	// True if the ant has moved this turn
 	bool HasMoved;
+
 
 public:
 	Ant();

@@ -16,7 +16,7 @@ public:
     bool isFood;
 
     int ant, hillPlayer;
-    std::vector<int> deadAnts;
+    std::vector<int> deadAnts; // Is really useful ? 
 
     //======================= FOR A*
     int F; // only for food
@@ -25,6 +25,11 @@ public:
     bool IsTargeted;
     bool IsReached;
     bool IsReachedByMyBot;
+
+    int Row, Col;
+
+    //======================= EXPLORATION
+    int ExplorationWeight;
 
 public:
     Square();

@@ -1,5 +1,4 @@
-#ifndef STATE_H_
-#define STATE_H_
+#pragma once
 
 #include <iostream>
 #include <stdio.h>
@@ -65,5 +64,3 @@ struct State
 
 std::ostream& operator<<(std::ostream &os, const State &state);
 std::istream& operator>>(std::istream &is, State &state);
-
-#endif //STATE_H_

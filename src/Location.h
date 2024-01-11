@@ -1,5 +1,6 @@
-#ifndef LOCATION_H_
-#define LOCATION_H_
+#pragma once
+
+#include "Bug.h"
 
 /*
     struct for representing locations in the grid.
@@ -18,6 +19,12 @@ struct Location
         row = r;
         col = c;
     };
-};
 
-#endif //LOCATION_H_
+    friend Bug& operator<<(Bug& bug, Location& L)
+    {
+        bug.file << L.row;
+        bug.file << L.col;
+
+        return bug;
+    };
+};
