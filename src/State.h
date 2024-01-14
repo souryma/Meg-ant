@@ -13,6 +13,8 @@
 #include "Timer.h"
 #include "Bug.h"
 #include "Square.h"
+#include "Shared.h"
+#include "Ant.h"
 #include "Location.h"
 
 /*
@@ -25,42 +27,48 @@ const int DIRECTIONS[4][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };      //{N, E,
 /*
     struct to store current state information
 */
-struct State
+class CState
 {
-    /*
-        Variables
-    */
-    int rows, cols,
-        turn, turns,
-        noPlayers;
-    double attackradius, spawnradius, viewradius;
-    double loadtime, turntime;
-    std::vector<double> scores;
-    bool gameover;
-    int64_t seed;
+private:
+    bool _GameOver;
+    int64_t _Seed;
 
-    std::vector<std::vector<Square> > grid;
-    std::vector<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
+public:
+    int Rows, Cols;
+    int Turn, TotalTurns;
+    int NumberOfPlayers;
 
-    Timer timer;
+    double AttackRadius, SpawnRadius, ViewRadius;
+    
+    double LoadTime, TurnTime;
+    InternalArray<double> Scores;
+
+    InternalArray2D<CSquare> Grid;
+    //InternalArray<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
+
+    InternalArray<CSquare> Foods;
+    InternalArray<CAnt> MyAnts, EnemyAnts;
+    InternalArray<CSquare> MyHills, EnemyHills;
+
+    ///================ DEBUG
     Bug bug;
+    Timer timer;
 
-    /*
-        Functions
-    */
-    State();
-    ~State();
+public:
+    CState();
+    ~CState();
 
-    void setup();
-    void reset();
+    void Setup();
+    void Reset();
 
-    void makeMove(const Location &loc, int direction);
+    void makeMove(const SLocation &loc, int direction);
 
-    double distance(const Location &loc1, const Location &loc2);
-    Location getLocation(const Location &startLoc, int direction);
+    double Distance(const SLocation &loc1, const SLocation &loc2);
+    SLocation GetLocation(const SLocation &startLoc, int direction);
 
-    void updateVisionInformation();
+    void UpdateVisionInformation();
+
+    friend std::ostream& operator<<(std::ostream &os, const CState &state);
+    friend std::istream& operator>>(std::istream &is, CState &state);
 };
 
-std::ostream& operator<<(std::ostream &os, const State &state);
-std::istream& operator>>(std::istream &is, State &state);

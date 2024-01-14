@@ -1,22 +1,24 @@
-#ifndef SQUARE_H_
-#define SQUARE_H_
+#pragma once
 
 #include <vector>
-#include "Direction.h"
+
+// Forward declarations
+class CAnt;
 
 /*
     struct for representing a square in the grid.
 */
-struct Square
+class CSquare
 {
 public:
-    bool isVisible;
-    bool isWater;
-    bool isHill;
-    bool isFood;
+    bool IsVisible;
+    bool IsWater;
+    bool IsHill;
+    bool IsFood;
+
+    CAnt* AntPtr;
 
     int ant, hillPlayer;
-    std::vector<int> deadAnts; // Is really useful ? 
 
     //======================= FOR A*
     int F; // only for food
@@ -28,21 +30,21 @@ public:
 
     int Row, Col;
 
-    //======================= EXPLORATION
+    ///======================= EXPLORATION
     int ExplorationWeight;
 
 public:
-    Square();
+    CSquare();
+    CSquare(int InRow, int InCol);
 
-    //resets the information for the square except water information
-    void reset()
+    void Reset();
+
+    //EDirection GetDirectionTo(CSquare S);
+
+    CSquare* GetNeighbours();
+
+    bool operator==(const CSquare& Other) const
     {
-        isVisible = 0;
-        isHill = 0;
-        isFood = 0;
-        ant = hillPlayer = -1;
-        deadAnts.clear();
-    };
+        return (Row == Other.Row) && (Col == Other.Col);
+    }
 };
-
-#endif //SQUARE_H_

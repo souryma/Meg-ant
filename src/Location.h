@@ -5,26 +5,26 @@
 /*
     struct for representing locations in the grid.
 */
-struct Location
+struct SLocation
 {
     int row, col;
 
-    Location()
+    SLocation()
     {
         row = col = 0;
     };
 
-    Location(int r, int c)
+    SLocation(int r, int c)
     {
         row = r;
         col = c;
     };
 
-    friend Bug& operator<<(Bug& bug, Location& L)
+    friend Bug& operator<<(Bug& Bug, SLocation& L)
     {
-        bug.file << L.row;
-        bug.file << L.col;
+        Bug.file << L.row;
+        Bug.file << L.col;
 
-        return bug;
+        return Bug;
     };
 };

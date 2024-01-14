@@ -3,106 +3,171 @@
 using namespace std;
 
 //constructor
-Bot::Bot()
+CBot::CBot()
 {
-
+	IsTimeout = false;
 };
 
 //plays a single game of Ants.
-void Bot::playGame()
+void CBot::PlayGame()
 {
-	//reads the game parameters and sets up
-	cin >> state;
-	state.setup();
+	// Init
+	cin >> State;
+	State.Setup();
 	endTurn();
 
-	//continues making moves while the game is not over
-	while (cin >> state)
+	// Update
+	while (cin >> State)
 	{
-		state.updateVisionInformation();
+		State.UpdateVisionInformation();
 		makeMoves();
 		endTurn();
 	}
 };
 
-//makes the bots moves for the turn
-void Bot::makeMoves()
+//makes the CBots moves for the turn
+void CBot::makeMoves()
 {
-	state.bug << "turn " << state.turn << ":" << endl;
-	state.bug << state << endl;
+	//State.bug << "turn " << State.Turn << ":" << endl;
+	//State.bug << State << endl;
 
-	// DEBUG : for now, every ant is an exploring ant
-	state.exploringAnts = state.myAnts;
+	//// DEBUG : for now, every ant is an exploring ant
+	//State.exploringAnts = State.myAnts;
 
-	// TODO find a way to split exploring ants and defending ants
+	//// TODO find a way to split exploring ants and defending ants
 
-	Location closestFood;
-	//Make every exploring ants go the closest food
-	for (int ant = 0; ant < (int)state.exploringAnts.size(); ant++)
-	{
-		for (int d = 0; d < TDIRECTIONS; d++)
-		{
-			Location loc = state.getLocation(state.myAnts[ant], d);
+	//SLocation closestFood;
+	////Make every exploring ants go the closest food
+	//for (int ant = 0; ant < (int)State.exploringAnts.size(); ant++)
+	//{
+	//	for (int d = 0; d < TDIRECTIONS; d++)
+	//	{
+	//		SLocation loc = State.getLocation(State.MyAnts[ant], d);
 
-			if (!state.grid[loc.row][loc.col].isWater)
-			{
-				closestFood = getClosestFood(state.myAnts[ant]);
-				// check if food is not already targeted by an ant
-				if (!isFoodAlreadyTargeted(closestFood)) 
-				{
-					state.targetedFoods.push_back(closestFood);
-				}
-				state.bug << "Closest food : " << closestFood << endl;
+	//		if (!State.Grid[loc.row][loc.col].isWater)
+	//		{
+	//			//closestFood = getClosestFood(State.myAnts[ant]);
+	//			//// check if food is not already targeted by an ant
+	//			//if (!isFoodAlreadyTargeted(closestFood)) 
+	//			//{
+	//			//	State.targetedFoods.push_back(closestFood);
+	//			//}
+	//			State.bug << "Closest food : " << closestFood << endl;
 
-				// TODO get shorest path between ants and closest food (A*?)
+	//			// TODO get shorest path between ants and closest food (A*?)
 
-				state.makeMove(state.myAnts[ant], d);
-				break;
-			}
-		}
-	}
+	//			State.makeMove(State.MyAnts[ant].Location, d);
+	//			break;
+	//		}
+	//	}
+	//}
 
-	state.bug << "time taken: " << state.timer.getTime() << "ms" << endl << endl;
+	//State.bug << "time taken: " << State.timer.getTime() << "ms" << endl << endl;
 };
 
-Location Bot::getClosestFood(Location ant) {
-	double smallestDistance = 99999.0, previousSmallestDistance = 99999.0;
-	Location closestFood = Location(0, 0); // Returns this position of no food is found
-
-	// iterate on each food in the current state
-	for (int i = 0; i < state.food.size(); i++)
-	{
-		smallestDistance = min(smallestDistance, state.distance(ant, state.food[i]));
-		if (smallestDistance != previousSmallestDistance)
-		{
-			previousSmallestDistance = smallestDistance;
-			closestFood = state.food[i];
-		}
-	}
-
-	return closestFood;
-}
-
-bool Bot::isFoodAlreadyTargeted(Location food)
-{
-	bool answer = false;
-
-	for (int i = 0; i < state.targetedFoods.size(); i++)
-	{
-		if (food.col == state.targetedFoods[i].col && food.row == state.targetedFoods[i].row) {
-			answer = true;
-		}
-	}
-
-	return answer;
-}
-
 //finishes the turn
-void Bot::endTurn()
+void CBot::endTurn()
 {
-	if (state.turn > 0)
-		state.reset();
-	state.turn++;
+	if (State.Turn > 0)
+		State.Reset();
+	State.Turn++;
 
 	cout << "go" << endl;
 };
+
+///================ MISSIONS
+
+void CBot::_AssignMissions()
+{
+	for (auto it = Missions.begin(); it != Missions.end();)
+	{
+		SMission& missionRef = *it;
+
+		if (missionRef.HasToRemove)
+		{
+			Missions.erase(it);
+			continue;
+		}
+		else
+		{
+			CAnt* antPtr = missionRef.CurrentSquare.AntPtr;
+
+			if (antPtr == nullptr) // No ant at this square. May be the ant is dead.
+			{
+				Missions.erase(it);
+				continue;
+			}
+
+			antPtr->HasMission = true;
+			antPtr->Mission = &missionRef;
+			++it;
+		}
+	}
+}
+
+void CBot::_CreateMissions()
+{
+	for (CAnt ant : State.MyAnts)
+	{
+		if (ant.HasMission) continue; // Verifier si la mission est bonne
+
+		CSquare targetSquare;
+		
+		
+		
+	}
+
+	// Analyser les foods
+	// Analyser les enemies
+	// Analyser les alliés
+	// Analyser les 
+
+}
+
+///================ MISC
+
+void CBot::_AStar(CSquare& From, CSquare& To, bool FirstTree)
+{
+	bool found = false;
+	const int maxDist = 400;
+
+	InternalList<CSquare> squaresToExplore;
+	InternalList<CSquare> exploredSquares;
+
+	squaresToExplore.push_back(From);
+	int f = 0;
+	int fromDist = 0;
+	bool bReached = true;
+	exploredSquares.push_back(From);
+
+	for (auto it = squaresToExplore.begin(); it != squaresToExplore.end();)
+	{
+		CSquare& currentSquare = *it;
+		int currentSquareDist = 0;
+
+		CSquare* neighbours = currentSquare.GetNeighbours();
+
+		for (int i = 0; i < 4 ; i++)
+		{
+			auto neighbour = *(neighbours + i);
+
+			if (
+				neighbour.IsReached ||
+				(currentSquare == From && (FirstTree && !_IsSafe(neighbour))) ||
+				neighbour.IsHill && neighbour.hillPlayer == MY_PLAYER_ID
+			)
+				continue;
+
+			int neighbourDist = currentSquareDist + 1;
+
+		}
+
+		delete[] neighbours;
+	}
+}
+
+bool CBot::_IsSafe(CSquare& Dest)
+{
+	return false;
+}
+

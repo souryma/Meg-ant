@@ -13,11 +13,11 @@ using namespace std;
 class AntManager
 {
 public:
-	void AStar(Square From, Square To, bool FirstStep);
+	void AStar(CSquare From, CSquare To, bool FirstStep);
 
 private:
 
 
-	int Dist(Square S1, Square S2);
+	int Dist(CSquare S1, CSquare S2);
 };
 
