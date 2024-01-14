@@ -7,23 +7,12 @@
 */
 struct SLocation
 {
-    int row, col;
-
-    SLocation()
-    {
-        row = col = 0;
-    };
-
-    SLocation(int r, int c)
-    {
-        row = r;
-        col = c;
-    };
+    int Row, Col;
 
     friend CBug& operator<<(CBug& Bug, SLocation& L)
     {
-        Bug.file << L.row;
-        Bug.file << L.col;
+        Bug.file << L.Row;
+        Bug.file << L.Col;
 
         return Bug;
     };

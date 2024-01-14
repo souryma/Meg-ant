@@ -3,6 +3,7 @@
 CSquare::CSquare()
 {
 	IsVisible = IsWater = IsHill = IsFood = 0;
+    IsSafe = true;
 	ant = hillPlayer = -1;
 
 	IsReached = false;

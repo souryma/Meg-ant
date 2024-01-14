@@ -1,21 +1,33 @@
 #include "Ant.h"
 
-CAnt::CAnt(SLocation location) {
+CAnt::CAnt(int InRow, int InCol) {
 	IsAttacking = false;
 	IsDefending = false;
-	IsExploring = false;
+	IsExploring = true;
 	IsDancing = false;
 
 	IsInDanger = false;
 	IsReallyInDanger = false;
 	EnemyCount = 0;
 	HasMoved = false;
-	Location = location;
+	Location.Row = InRow;
+	Location.Col = InCol;
 }
 
-CAnt::CAnt(int InRow, int InCol)
+// Se dirige toujours vers l'EST si le chemin est libre
+EDirection CAnt::Explore(CSquare antSquare)
 {
-	CAnt(SLocation(InRow, InCol));
+	if (antSquare.GetNeighbours()[0].IsSafe)
+		return EAST;
+
+	if (antSquare.GetNeighbours()[1].IsSafe)
+		return SOUTH;
+
+	if (antSquare.GetNeighbours()[2].IsSafe)
+		return WEST;
+
+	if (antSquare.GetNeighbours()[3].IsSafe)
+		return NORTH;
 }
 
 // Make the ant switch between two squares in the desired direction

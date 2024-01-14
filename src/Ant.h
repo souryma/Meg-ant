@@ -34,7 +34,7 @@ public:
 
 	void Attack();
 	void Defend();
-	void Explore();
+	EDirection Explore(CSquare square);
 
 	// Make the ant switch between two squares
 	EDirection Dance(EDirection direction);

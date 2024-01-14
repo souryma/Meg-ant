@@ -15,6 +15,7 @@ public:
     bool IsWater;
     bool IsHill;
     bool IsFood;
+    bool IsSafe;
 
     CAnt* AntPtr;
 

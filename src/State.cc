@@ -39,18 +39,18 @@ void CState::Reset()
 //outputs move information to the engine
 void CState::makeMove(const SLocation &loc, int direction)
 {
-    cout << "o " << loc.row << " " << loc.col << " " << CDIRECTIONS[direction] << endl;
+    cout << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
 
     SLocation nLoc = GetLocation(loc, direction);
-    Grid[nLoc.row][nLoc.col].ant = Grid[loc.row][loc.col].ant;
-    Grid[loc.row][loc.col].ant = -1;
+    Grid[nLoc.Row][nLoc.Col].ant = Grid[loc.Row][loc.Col].ant;
+    Grid[loc.Row][loc.Col].ant = -1;
 };
 
 //returns the euclidean distance between two locations with the edges wrapped
 double CState::Distance(const SLocation &loc1, const SLocation &loc2)
 {
-    int d1 = abs(loc1.row-loc2.row),
-        d2 = abs(loc1.col-loc2.col),
+    int d1 = abs(loc1.Row-loc2.Row),
+        d2 = abs(loc1.Col-loc2.Col),
         dr = min(d1, Rows-d1),
         dc = min(d2, Cols-d2);
     return sqrt(dr*dr + dc*dc);
@@ -59,8 +59,9 @@ double CState::Distance(const SLocation &loc1, const SLocation &loc2)
 //returns the new location from moving in a given direction with the edges wrapped
 SLocation CState::GetLocation(const SLocation &loc, int direction)
 {
-    return SLocation( (loc.row + DIRECTIONS[direction][0] + Rows) % Rows,
-                     (loc.col + DIRECTIONS[direction][1] + Cols) % Cols );
+    /*return SLocation( (loc.Row + DIRECTIONS[direction][0] + Rows) % Rows,
+                     (loc.Col + DIRECTIONS[direction][1] + Cols) % Cols );*/
+    return loc;
 };
 
 /*
@@ -83,8 +84,8 @@ void CState::UpdateVisionInformation()
         locQueue.push(sLoc);
 
         std::vector<std::vector<bool> > visited(Rows, std::vector<bool>(Cols, 0));
-        Grid[sLoc.row][sLoc.col].IsVisible = 1;
-        visited[sLoc.row][sLoc.col] = 1;
+        Grid[sLoc.Row][sLoc.Col].IsVisible = 1;
+        visited[sLoc.Row][sLoc.Col] = 1;
 
         while(!locQueue.empty())
         {
@@ -95,14 +96,14 @@ void CState::UpdateVisionInformation()
             {
                 nLoc = GetLocation(cLoc, d);
 
-                if(!visited[nLoc.row][nLoc.col] && Distance(sLoc, nLoc) <= ViewRadius)
+                if(!visited[nLoc.Row][nLoc.Col] && Distance(sLoc, nLoc) <= ViewRadius)
                 {
-                    Grid[nLoc.row][nLoc.col].IsVisible = 1;
+                    Grid[nLoc.Row][nLoc.Col].IsVisible = 1;
                     locQueue.push(nLoc);
 
                     // TODO : here we should fill the state.food / state.enemy / ... 
                 }
-                visited[nLoc.row][nLoc.col] = 1;
+                visited[nLoc.Row][nLoc.Col] = 1;
             }
         }
     }
@@ -212,21 +213,30 @@ istream& operator>>(istream &is, CState &state)
             {
                 is >> row >> col;
                 state.Grid[row][col].IsWater = 1;
+                state.Grid[row][col].IsSafe = false;
             }
             else if(inputType == "f") //food square
             {
                 is >> row >> col;
                 state.Grid[row][col].IsFood = 1;
+                state.Grid[row][col].IsSafe = true;
                 state.Foods.push_back(CSquare(row, col));
             }
             else if(inputType == "a") //live ant square
             {
                 is >> row >> col >> player;
+
                 state.Grid[row][col].ant = player;
-                if(player == 0)
+                if (player == 0) 
+                {
                     state.MyAnts.push_back(CAnt(row, col));
-                else
+                    state.Grid[row][col].IsSafe = true;
+                }
+                else 
+                {
                     state.EnemyAnts.push_back(CAnt(row, col));
+                    state.Grid[row][col].IsSafe = false;
+                }
             }
             else if(inputType == "d") //dead ant square
             {
