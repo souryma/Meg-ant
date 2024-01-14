@@ -20,7 +20,7 @@ struct SLocation
         col = c;
     };
 
-    friend Bug& operator<<(Bug& Bug, SLocation& L)
+    friend CBug& operator<<(CBug& Bug, SLocation& L)
     {
         Bug.file << L.row;
         Bug.file << L.col;

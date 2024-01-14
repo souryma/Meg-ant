@@ -9,11 +9,11 @@
     #include <io.h>
     #include <windows.h>
 
-    struct Timer
+    class CTimer
     {
         clock_t startTime, currentTime;
 
-        Timer()
+        CTimer()
         {
 
         };
@@ -32,7 +32,7 @@
     };
 
 #else //Mac/Linux Timer
-    struct Timer
+    class Timer
     {
         timeval timer;
         double startTime, currentTime;

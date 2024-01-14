@@ -7,13 +7,13 @@ CState::CState()
 {
     _GameOver = 0;
     Turn = 0;
-    bug.open("./debug.txt");
+    Bug.open("./debug.txt");
 };
 
 //deconstructor
 CState::~CState()
 {
-    bug.close();
+    Bug.close();
 };
 
 //sets the state up
@@ -196,7 +196,7 @@ istream& operator>>(istream &is, CState &state)
             }
             else if(inputType == "ready") //end of parameter input
             {
-                state.timer.start();
+                state.Timer.Start();
                 break;
             }
             else    //unknown line
@@ -260,7 +260,7 @@ istream& operator>>(istream &is, CState &state)
                 if(state._GameOver)
                     is.setstate(std::ios::failbit);
                 else
-                    state.timer.start();
+                    state.Timer.Start();
                 break;
             }
             else //unknown line

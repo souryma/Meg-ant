@@ -20,6 +20,13 @@ void CBot::PlayGame()
 	while (cin >> State)
 	{
 		State.UpdateVisionInformation();
+		// CreateMissions();
+		// AssignMissions();
+		// DefendHill();
+		// Attack();
+		// Explore();
+		// Dance();
+
 		makeMoves();
 		endTurn();
 	}
@@ -75,7 +82,7 @@ void CBot::endTurn()
 	cout << "go" << endl;
 };
 
-///================ MISSIONS
+///================ STRATEGY
 
 void CBot::_AssignMissions()
 {
@@ -122,6 +129,26 @@ void CBot::_CreateMissions()
 	// Analyser les alliés
 	// Analyser les 
 
+}
+
+void CBot::_DefendHill()
+{
+}
+
+void CBot::_AttackEnemyHills()
+{
+}
+
+void CBot::_FindFood()
+{
+}
+
+void CBot::_Explore()
+{
+}
+
+void CBot::_Attack()
+{
 }
 
 ///================ MISC

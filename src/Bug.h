@@ -17,11 +17,12 @@
         bug << "testing" << 2.0 << '%' << endl;
         bug.close();
 */
-struct Bug
+class CBug
 {
+public:
     std::ofstream file;
 
-    Bug()
+    CBug()
     {
 
     };
@@ -44,7 +45,7 @@ struct Bug
 };
 
 //output function for endl
-inline Bug& operator<<(Bug &bug, std::ostream& (*manipulator)(std::ostream&))
+inline CBug& operator<<(CBug &bug, std::ostream& (*manipulator)(std::ostream&))
 {
     #ifdef DEBUG
         bug.file << manipulator;
@@ -55,7 +56,7 @@ inline Bug& operator<<(Bug &bug, std::ostream& (*manipulator)(std::ostream&))
 
 //output function
 template <typename T>
-inline Bug& operator<<(Bug &bug, const T& t)
+inline CBug& operator<<(CBug &bug, const T& t)
 {
 #ifdef DEBUG
     bug.file << t;

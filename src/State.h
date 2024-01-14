@@ -51,8 +51,8 @@ public:
     InternalArray<CSquare> MyHills, EnemyHills;
 
     ///================ DEBUG
-    Bug bug;
-    Timer timer;
+    CBug Bug;
+    InternalTimer Timer;
 
 public:
     CState();
