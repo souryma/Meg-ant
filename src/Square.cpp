@@ -2,11 +2,11 @@
 #include "Shared.h"
 
 // Static members
-int CSquare::SquareIDCounter = 0;
+int CSquare::_SquareIDCounter = 0;
 
 CSquare::CSquare()
 {
-	ID = ++SquareIDCounter;
+	ID = ++_SquareIDCounter;
 
 	IsVisible = IsWater = IsHill = IsFood = 0;
 	IsSafe = true;

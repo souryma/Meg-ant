@@ -9,7 +9,7 @@ class CSquare;
 class CAnt
 {
 private:
-	static int MyAntIDCounter;
+	static int _MyAntIDCounter;
 	bool _DancingState = false;
 	EDirection _PreviousDirection = NORTH;
 
@@ -35,12 +35,12 @@ public:
 
 public:
 	CAnt(int InRow, int InCol);
-	CAnt(CSquare* square);
+	CAnt(CSquare* Square);
 
 	// Make the ant go in random directions
 	EDirection Explore();
 
 	// Make the ant switch between two squares
-	EDirection Dance(EDirection direction);
+	EDirection Dance(EDirection Direction);
 };
 

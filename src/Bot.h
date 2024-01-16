@@ -31,16 +31,8 @@ private:
 
 	void _AssignMissions();
 
-	/*
-	* On commence par la food ou par nos fourmis ?
-	*/
 	void _FindFood();
 
-	/*
-	* Dans le cas où on ne détecte pas de bouf au début de la partie.
-	* On envoie la/les fourmi(s) en balade.
-	* C'est ici qu'on définira le comportement de "longer vers un mur" juste pour rien
-	*/
 	void _Explore();
 
 	///================ MISC
@@ -49,7 +41,7 @@ private:
 	inline void _InitFightAreas();
 	inline void _InitExploration();
 
-	InternalMap<int, CAnt*> GetCloseAnts(CSquare& Square);
+	InternalMap<int, CAnt*> _GetCloseAnts(CSquare& Square);
 
 	// No enemy / My ant is there
 	// Check the area around the square

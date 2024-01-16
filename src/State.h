@@ -59,9 +59,9 @@ public:
 	void Setup();
 	void Reset();
 
-	void MakeMove(SLocation& loc, int direction);
+	void MakeMove(SLocation& Loc, int Direction);
 
-	double Distance(const SLocation& loc1, const SLocation& loc2);
+	double Distance(const SLocation& Loc1, const SLocation& Loc2);
 	void SetLocation(SLocation& IOLocation, int Direction);
 
 	void UpdateVisionInformation();

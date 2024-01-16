@@ -1,11 +1,11 @@
 #include "Ant.h"
 
 // Static members
-int CAnt::MyAntIDCounter = 0;
+int CAnt::_MyAntIDCounter = 0;
 
 CAnt::CAnt(int InRow, int InCol) {
-	MyAntIDCounter++;
-	ID = MyAntIDCounter;
+	_MyAntIDCounter++;
+	ID = _MyAntIDCounter;
 
 	IsInMyArea = false;
 
@@ -23,8 +23,8 @@ CAnt::CAnt(int InRow, int InCol) {
 
 CAnt::CAnt(CSquare* square)
 {
-	MyAntIDCounter++;
-	ID = MyAntIDCounter;
+	_MyAntIDCounter++;
+	ID = _MyAntIDCounter;
 
 	IsInMyArea = false;
 

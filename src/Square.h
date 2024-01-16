@@ -15,7 +15,7 @@ using InternalArray = std::vector<T>;
 class CSquare
 {
 private:
-	static int SquareIDCounter;
+	static int _SquareIDCounter;
 
 public:
 	int ID;
@@ -53,8 +53,6 @@ public:
 	CSquare(int InRow, int InCol);
 
 	void Reset();
-
-	CSquare* GetNeighbours();
 
 	InternalArray<CSquare*> GetNeighbors();
 

@@ -179,7 +179,7 @@ void CBot::_FindFood()
 			else {
 				if (!_IsSafe(*currentSquare->Previous)) {
 
-					InternalMap<int, CAnt*> closeAnts = GetCloseAnts(*currentSquare->FoodSourceFinding);
+					InternalMap<int, CAnt*> closeAnts = _GetCloseAnts(*currentSquare->FoodSourceFinding);
 
 					bool IsHavingSupport = false;
 
@@ -447,7 +447,7 @@ inline void CBot::_InitExploration()
 
 ///================ MISC
 
-InternalMap<int, CAnt*> CBot::GetCloseAnts(CSquare& Square) {
+InternalMap<int, CAnt*> CBot::_GetCloseAnts(CSquare& Square) {
 	InternalMap<int, CAnt*> closeAntDists;
 
 	for (int i = 0; i < State.MyAnts.size();)
