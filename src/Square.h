@@ -37,9 +37,7 @@ public:
     CSquare* AreaCenter;
 
     //=======================
-    bool IsTargeted;
     bool IsReached;
-    bool IsReachedByMyBot;
 
     int Row, Col;
 
@@ -55,8 +53,6 @@ public:
     CSquare(int InRow, int InCol);
 
     void Reset();
-
-    //EDirection GetDirectionTo(CSquare S);
 
     CSquare* GetNeighbours();
 

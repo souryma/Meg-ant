@@ -13,7 +13,6 @@ CSquare::CSquare()
 	AntPlayerId = HillPlayer = -1;
     IsEnemy = false;
 	IsReached = false;
-	IsReachedByMyBot = false;
 
     ExplorationWeight = 100;
 
@@ -57,23 +56,6 @@ void CSquare::Reset()
 //        return S.Col == 0 ? EDirection::NORTH : EDirection::SOUTH;
 //    }
 //}
-
-// TODO : Return properly
-CSquare* CSquare::GetNeighbours()
-{
-	CSquare neighbours[4];
-
-	// NORTH
-	neighbours[0] = CSquare(Row - 1, Col);
-	// EAST
-	neighbours[1] = CSquare(Row, Col - 1);
-	// SOUTH
-	neighbours[2] = CSquare(Row + 1, Col);
-	// WEST
-	neighbours[3] = CSquare(Row, Col + 1);
-
-	return neighbours;
-}
 
 InternalArray<CSquare*> CSquare::GetNeighbors()
 {
