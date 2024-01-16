@@ -61,14 +61,18 @@ void CSquare::Reset()
 // TODO : Return properly
 CSquare* CSquare::GetNeighbours()
 {
-    CSquare neighbours[4];
-    
-    neighbours[0] = CSquare(Row, Col+1);
-    neighbours[1] = CSquare(Row+1, Col);
-    neighbours[2] = CSquare(Row, Col-1);
-    neighbours[3] = CSquare(Row-1, Col);
+	CSquare neighbours[4];
 
-    return neighbours;
+	// NORTH
+	neighbours[0] = CSquare(Row - 1, Col);
+	// EAST
+	neighbours[1] = CSquare(Row, Col - 1);
+	// SOUTH
+	neighbours[2] = CSquare(Row + 1, Col);
+	// WEST
+	neighbours[3] = CSquare(Row, Col + 1);
+
+	return neighbours;
 }
 
 InternalArray<CSquare*> CSquare::GetNeighbors()
