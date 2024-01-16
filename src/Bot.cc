@@ -27,6 +27,8 @@ void CBot::PlayGame()
 
 		_FindFood();
 
+		_Explore();
+
 		// CreateMissions();
 		// AssignMissions();
 		// DefendHill();
@@ -37,7 +39,6 @@ void CBot::PlayGame()
 			ant.IsExploring = true;
 		}*/
 
-		_Explore();
 		// Dance();
 		endTurn();
 	}
@@ -46,38 +47,6 @@ void CBot::PlayGame()
 //makes the CBots moves for the turn
 void CBot::MakeMoves(CSquare& From, CSquare& To)
 {
-	//State.Bug << "turn " << State.Turn << ":" << endl;
-	//State.Bug << State << endl;
-
-	//// TODO find a way to split exploring ants and defending ants
-
-	//SLocation closestFood;
-	////Make every exploring ants go the closest food
-	//for (int ant = 0; ant < (int)State.MyAnts.size(); ant++)
-	//{
-	//	for (int d = 0; d < TDIRECTIONS; d++)
-	//	{
-	//		SLocation loc = State.GetLocation(State.MyAnts[ant]->Location, d);
-
-	//		if (!SGlobal::Grid[loc.Row][loc.Col]->IsWater)
-	//		{
-	//			//closestFood = getClosestFood(State.myAnts[ant]);
-	//			//// check if food is not already targeted by an ant
-	//			//if (!isFoodAlreadyTargeted(closestFood)) 
-	//			//{
-	//			//	State.targetedFoods.push_back(closestFood);
-	//			//}
-	//			State.Bug << "Closest food : " << closestFood << endl;
-
-	//			// TODO get shorest path between ants and closest food (A*?)
-
-	//			State.makeMove(State.MyAnts[ant]->Location, d);
-	//			break;
-	//		}
-	//	}
-	//}
-
-
 	State.Bug << "Make move" << endl;
 
 	SLocation loc;
@@ -104,7 +73,7 @@ void CBot::_InitStrategy()
 
 	_InitNearbyAllies();
 	_InitNearbyEnemies();
-
+	_InitExploration();
 }
 
 void CBot::_AssignMissions()
@@ -254,7 +223,7 @@ void CBot::_FindFood()
 					}
 				}
 				else {
-					// tile is safe
+					// square is safe
 					MakeMoves(*currentSquare, *currentSquare->Previous);
 				}
 			}
@@ -298,14 +267,23 @@ void CBot::_FindFood()
 		}
 	}
 
-	for (auto tile : exploredSquare)
-		tile->IsReached = false;
+	for (auto square : exploredSquare)
+		square->IsReached = false;
 }
 
 void CBot::_Explore()
 {
 	for (auto ant : State.MyAnts)
 	{
+		InternalMap<CSquare*, int> values;
+		InternalList<CSquare*> squaresToExplore;
+		InternalList<CSquare*> exploredSquares;
+		CSquare* antSquare = ant->SquarePtr;
+
+		antSquare->IsReached = true;
+		antSquare->Dist = 0;
+		exploredSquares.push_back(antSquare);
+
 		// Do nothing if the ant is not exploring
 		//if (ant.IsExploring == false)
 		//	return;
@@ -317,6 +295,76 @@ void CBot::_Explore()
 		//CSquare* sq = SGlobal::Grid[ant->Location.Row][ant->Location.Col + 1]->GetNeighbours();
 		//State.Bug << "Ant neighbour : " << *sq.IsFood << endl;
 		//State.makeMove(ant.Location, ant.Explore(State.Grid[ant.Location.Row][ant.Location.Col]));
+
+
+		for (auto neighbor : antSquare->GetNeighbors()) {
+			values.insert({ neighbor, 0 });
+			squaresToExplore.push_back(neighbor);
+			neighbor->Dist = 1;
+			neighbor->IsReached = true;
+			neighbor->Prevs.push_back(neighbor);
+			exploredSquares.push_back(neighbor);
+		}
+
+		while (!squaresToExplore.empty()) {
+			CSquare* currentSquare = squaresToExplore.front();
+			squaresToExplore.pop_front();
+
+			if (currentSquare->Dist > AREA_DIAMETER) {
+				for (auto prevFirst : currentSquare->Prevs) {
+					values.insert({ prevFirst, values.at(prevFirst) + currentSquare->ExplorationWeight });
+				}
+				continue;
+			}
+
+			for (auto neighbor : currentSquare->GetNeighbors()) {
+				if (neighbor->IsReached) {
+					
+					if (neighbor->Dist == currentSquare->Dist + 1) {
+						neighbor->Prevs.push_back(*neighbor->Prevs.end());
+						neighbor->Prevs.push_back(*currentSquare->Prevs.begin());
+						neighbor->Prevs.push_back(*currentSquare->Prevs.end());
+					}
+					continue;
+				}
+				neighbor->IsReached = true;
+				neighbor->Previous = currentSquare;
+				neighbor->Dist = currentSquare->Dist + 1;
+				neighbor->Prevs.push_back(*neighbor->Prevs.end()); 
+				neighbor->Prevs.push_back(*currentSquare->Prevs.begin());
+				neighbor->Prevs.push_back(*currentSquare->Prevs.end());
+				exploredSquares.push_back(neighbor);
+				squaresToExplore.push_back(neighbor);
+			}
+		}
+
+		int bestValue = 0;
+		CSquare* bestDest = nullptr;
+		for (const auto entry : values) {
+			if (entry.second > bestValue) {
+				bestValue = entry.second;
+				bestDest = entry.first;
+			}
+		}
+
+		if (bestValue == 0 || bestDest == nullptr) {
+			for (auto square : exploredSquares)
+				square->IsReached = false;
+		}
+
+		for (auto square : exploredSquares) {
+			if (square->Dist > AREA_DIAMETER && std::find(square->Prevs.begin(), square->Prevs.end(), bestDest) != square->Prevs.end()) {
+				square->ExplorationWeight = 0;
+			}
+			square->IsReached = false;
+			square->Prevs.clear();
+		}
+
+		State.Bug << "Owééé" << endl;
+		State.Bug << "ANT : " << (!!antSquare) << endl;
+		State.Bug << "Owééé" << (!!bestDest) << endl;
+
+		MakeMoves(*antSquare, *bestDest);
 	}
 }
 
@@ -396,73 +444,46 @@ inline void CBot::_InitNearbyEnemies()
 
 inline void CBot::_InitFightAreas()
 {
-	//InternalList<CSquare*> squaresToExplore;
-	//InternalList<CSquare*> exploredSquare;
+	
+}
 
-	//for (auto AntPlayerId : State.EnemyAnts) {
-	//	squaresToExplore.push_back(AntPlayerId->SquarePtr);
-	//}
-	//for (auto AntPlayerId : State.MyAnts) {
-	//	squaresToExplore.push_back(AntPlayerId->SquarePtr);
-	//	AntPlayerId->IsInMyArea = true;
-	//}
+inline void CBot::_InitExploration()
+{
+	InternalList<CSquare*> squaresToExplore;
+	InternalList<CSquare*> exploratedSquares;
 
-	//for (auto currentSquare : squaresToExplore) {
-	//	currentSquare->Dist = 0;
-	//	currentSquare->IsReached = true;
-	//	exploredSquare.push_back(currentSquare);
-	//	currentSquare->AreaCenter = currentSquare;
-	//	SFightArea area;
-	//	if (currentSquare->IsHill && currentSquare->HillPlayer == MY_PLAYER_ID) {
-	//		area.IsAreaContainsMyHill = true;
-	//		area.MyHill = currentSquare;
-	//	}
-	//	area.Player = currentSquare->AntPlayerId;
-	//	area.Ants.push_back(currentSquare->AntPtr);
-	//	area.Squares.push_back(currentSquare);
-	//	areaMap[currentSquare] = area;
-	//}
-	//while (!squaresToExplore.empty()) {
-	//	CSquare* currentSquare = squaresToExplore.front();
-	//	squaresToExplore.pop_front();
+	for (auto ant : State.MyAnts)
+		squaresToExplore.push_back(ant->SquarePtr);
 
-	//	if (currentSquare->Dist >= AREA_DIAMETER) break;
-	//	
-	//	for (auto n : currentSquare->GetNeighbors()) {
-	//		if (n.isReached) {
-	//			if (n.startTile != currentSquare.startTile && n.startTile->type == currentSquare.startTile->type &&
-	//				areaMap[n.startTile] != areaMap[currentSquare.startTile]) {
-	//				Area& nArea = areaMap[n.startTile];
-	//				Area& tileArea = areaMap[currentSquare.startTile];
-	//				tileArea.ants.splice(tileArea.ants.end(), nArea.ants);
-	//				tileArea.tiles.splice(tileArea.tiles.end(), nArea.tiles);
-	//				for (auto& AntPlayerId : nArea.ants) {
-	//					areaMap[AntPlayerId.currentSquare] = tileArea;
-	//				}
-	//				if (nArea.containsHill) {
-	//					tileArea.containsHill = true;
-	//					tileArea.hill = nArea.hill;
-	//				}
-	//			}
-	//		}
-	//		else {
-	//			n.isReached = true;
-	//			n.dist = currentSquare.dist + 1;
-	//			n.startTile = currentSquare.startTile;
-	//			areaMap[n.startTile].tiles.push_back(n);
-	//			if (n.startTile->type == MY_ANT) n.isInMyArea = true;
-	//			if (n.isHill && n.HillPlayer == MY_ANT) {
-	//				areaMap[n.startTile].containsHill = true;
-	//				areaMap[n.startTile].hill = &n;
-	//			}
-	//			exploredSquare.push_back(n);
-	//			squaresToExplore.push_back(n);
-	//		}
-	//	}
-	//}
-	//for (auto& tile : exploredSquare) {
-	//	tile.isReached = false;
-	//}
+	for (auto square : squaresToExplore) {
+		square->Dist = 0;
+		square->IsReached = true;
+		square->AreaCenter= square;
+		exploratedSquares.push_back(square);
+	}
+
+	while (!squaresToExplore.empty()) {
+		auto currentSquare = squaresToExplore.front();
+		squaresToExplore.pop_front();
+
+		if (currentSquare->Dist > AREA_DIAMETER) break;
+
+		currentSquare->ExplorationWeight = 0;
+		for (auto neighbor : currentSquare->GetNeighbors()) {
+
+			if (neighbor->IsReached) 
+				continue;
+
+			neighbor->IsReached = true;
+			neighbor->Previous = currentSquare;
+			neighbor->Dist = currentSquare->Dist + 1;
+			neighbor->AreaCenter = currentSquare->AreaCenter;
+			exploratedSquares.push_back(neighbor);
+			squaresToExplore.push_back(neighbor);
+		}
+	}
+	// Reset values
+	for (auto square : exploratedSquares) square->IsReached = false;
 }
 
 ///================ MISC
@@ -529,42 +550,6 @@ bool CBot::_IsSuicide(CAnt& Ant, CSquare& Dest)
 /**
 * Pathfinding : A*
 */
-
-//InternalArray<CSquare&> CBot::_BFS_DistanceBased(CSquare& Start, int MaxDistance)
-//{
-//	InternalQueue<CSquare&> squaresToExplore;
-//	InternalQueue<CSquare&> exploredSquare;
-//
-//	Start.Dist = 0;
-//	Start.IsReached = true;
-//	squaresToExplore.push(Start);
-//
-//	while (!squaresToExplore.empty())
-//	{
-//		CSquare& currentSquare = squaresToExplore.front();
-//		squaresToExplore.pop();
-//
-//		if (currentSquare.Dist >= MaxDistance)
-//			break;
-//
-//		for (auto neighborPtr : currentSquare.GetNeighbors())
-//		{
-//			if (neighborPtr->IsReached)
-//			{
-//
-//			}
-//			else
-//			{
-//				neighborPtr->IsReached = true;
-//				neighborPtr->Dist = currentSquare.Dist + 1;
-//
-//
-//			}
-//		}
-//	}
-//
-//	return InternalArray<CSquare&>();
-//}
 
 InternalArray<CSquare*> CBot::_AStar(CSquare& From, CSquare& To)
 {

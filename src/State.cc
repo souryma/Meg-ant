@@ -239,20 +239,23 @@ istream& operator>>(istream &is, CState &state)
 
                 CSquare* square = new CSquare(row, col);
                 CAnt* ant = new CAnt(row, col);
+                square->AntPtr = ant;
+                square->AntPlayerId = player;
+                ant->SquarePtr = square;
 
                 SGlobal::Grid[row][col]->AntPlayerId = player;
                 SGlobal::Grid[row][col]->AntPtr = ant;
-                square->AntPlayerId = player;
+                SGlobal::Grid[row][col] = square;
 
                 if (player == MY_PLAYER_ID)
                 {
+                    square->IsSafe = true;
                     state.MyAnts.push_back(ant);
-                    SGlobal::Grid[row][col]->IsSafe = true;
                 }
                 else 
                 {
+                    square->IsSafe = false;
                     state.EnemyAnts.push_back(ant);
-                    SGlobal::Grid[row][col]->IsSafe = false;
                 }
             }
             else if(inputType == "d") //dead ant square
@@ -265,11 +268,12 @@ istream& operator>>(istream &is, CState &state)
             else if(inputType == "h")
             {
                 is >> row >> col >> player;
-                SGlobal::Grid[row][col]->IsHill = 1;
-                SGlobal::Grid[row][col]->HillPlayer = player;
 
                 CSquare* square = new CSquare(row, col);
+                SGlobal::Grid[row][col] = square;
+
                 square->IsHill = true;
+                square->HillPlayer = player;
 
                 if (player == MY_PLAYER_ID)
                 {
@@ -279,9 +283,9 @@ istream& operator>>(istream &is, CState &state)
                 }
                 else
                 {
-                    square->HillPlayer = -1;
+                    square->HillPlayer = 2;
 
-                    state.EnemyHills.push_back(new CSquare(row, col));
+                    state.EnemyHills.push_back(square);
                 }
 
             }

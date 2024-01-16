@@ -48,6 +48,7 @@ public:
 
     ///======================= EXPLORATION
     int ExplorationWeight;
+    InternalArray<CSquare*> Prevs;
 
 public:
     CSquare();

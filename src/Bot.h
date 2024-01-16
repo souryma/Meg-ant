@@ -58,6 +58,7 @@ private:
     inline void _InitNearbyAllies();
     inline void _InitNearbyEnemies();
     inline void _InitFightAreas();
+    inline void _InitExploration();
 
     InternalMap<int, CAnt*> GetCloseAnts(CSquare& Square);
 
@@ -70,8 +71,6 @@ private:
     /**
     * Pathfinding : A*
     */
-
-    //InternalArray<CSquare&> _BFS_DistanceBased(CSquare& Start, int MaxDistance = AREA_DIAMETER);
 
     InternalArray<CSquare*> _AStar(CSquare& From, CSquare& To);
 
