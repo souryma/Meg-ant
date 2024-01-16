@@ -1,68 +1,43 @@
-# Meg-ant
-Repository for google ia ant project 
+# Style Guide
 
-# Coding style
+Ce document décrit les conventions de nommage et de style de code à suivre pour ce projet.
 
-Tous les membres de classes (y compris les méthodes) commencent par une majuscule. En plus de ça les membres privés débuteront avec un underscore.
+## Nommage
 
-Par exemple
+### Types
 
-```c++
-class Ant
-{
-private:
-    bool _Attr1;
-    
-public:
-    int Attr2;
+- Les structures commencent par `S` (ex: `SMission`)
+- Les classes commencent par `C` (ex: `CSquare`)
+- Les énumérations commencent par `E` (ex: `EDirection`)
 
-protected:
-    Ant();
-};
-```
+### Variables
 
-## Stratégie projet ants :
+- Les constantes sont en MAJUSCULES (ex: `MAX_PLAYERS`)
+- Les membres de classes commencent par une majuscule (ex: `Name`)
+- Les membres privés sont préfixés d'un underscore suivie d'une majuscule (ex: `_Score`)
+- Les variables locales commencent par une minuscule (ex: `playerIndex`)
 
-Garder des fourmis proches de la fourmilière 
-Quelques fourmis partent en expédition pour chercher la nourriture
-Garder ratio fourmis exploratrice/fourmis défensive
+### Espaces de noms
 
-Si une fourmis exploratrice se rapproche d'ennemis, elle fuis dans la direction opposée des ennemis
+- Les fichiers d'en-tête ont le préfixe `h` (ex: `player.h`)
+- Les fichiers sources ont le préfixe `cpp` (ex: `player.cpp`)
+- Les espaces de noms utilisent les majuscules (ex: `GAME`)
 
-Rechercher formation idéale pour fourmis exploratrices (3 fourmis espacées ?)
+## Style
 
-Lorsqu'une fourmis éclaireuse détecte une fourmis ennemi, elle marque l'endroit ou est l'ennemi.
+- Indentation avec des tabulations de taille 4
+- Accolades ouvrantes et fermantes sur la même colonne
+- Espaces autour des opérateurs
+- Les commentaires sont préfixés de `//`
+- Les commentaires de séparation sont préfixés de `///` pour signifier le début d'une section de code
 
-Si une fourmis détecte une fourmilière, elle marque sa position.
+## Autres conventions
 
+- Les types internes redéfinis commencent par `Internal` (ex: `InternalArray`, `InternalList`)
 
-Groupe de fourmis attaquantes :
-- 5 fourmis 
-- formation idéale pour attaquer
-- Attaque les endroits ou une fourmilière a été trouvée
--  
+# Problèmes rencontrés
 
-http://ants.aichallenge.org/strategy_guide.php
+- Compréhension du code de base ainsi que les mécaniques du jeu
+- Peu d'affinité avec le C++
 
-
-Classes de fourmis :
-- Exploratrice : vas à la nourriture la plus proche OU va tout droit/suis les bords
-- Gardienne : Reste autours de la fourmilière (en cercle) et *s'éloigne de plus en plus si il n'y a pas d'ennemis autours*
-- Attaquante : Se me en formation avec d'autres attaquantes et va à la fourmilière ennemi la plus proche
-
-Si nouvelle fourmis nait : elle devient gardien
-Si il y a trop de gardien : un des gradien devient explorateur
-Après un certain délais : On créé une formation de fourmis attaquantes depuis les fourmis gardiennes
-
-# TODO LIST
-
-- [ ] A* 
-- [ ] Optimisation du remplissage des tableaux (food, hills, enemy)
-- [ ] Regarder pour le debug
-- [ ] Implémenter d'autres types de distance (peut être)
-- [ ] Initialiser une classe pour la stratégie (AntManager)
-	- [ ] Attaquer
-	- [ ] Défendre
-	- [ ] Danser
-	- [ ] Explorer
-
+Malgré les difficultés rencontrés, nous avons essayé au mieux d'implémenter les principaux algorithmes ainsi que la stratégie que nous avons imaginé. Mais à cause de la structure du code on a pas réussi à tout unifier.
