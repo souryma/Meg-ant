@@ -3,79 +3,60 @@
 #include "State.h"
 
 /*
-    This struct represents your bot in the game of Ants
+	This struct represents your bot in the game of Ants
 */
 class CBot
 {
 private:
-    InternalList<SMission> Missions;
-    InternalArray<SFightArea*> _FightAreas;
+	InternalList<SMission> Missions;
+	InternalArray<SFightArea*> _FightAreas;
 
 public:
-    CState State;
-    bool IsTimeout;
+	CState State;
+	bool IsTimeout;
 
 public:
-    CBot();
+	CBot();
 
-    void PlayGame();    //plays a single game of Ants
+	void PlayGame();    //plays a single game of Ants
 
-    void MakeMoves(CSquare& From, CSquare& To);   //makes moves for a single turn
-    void endTurn();     //indicates to the engine that it has made its moves
+	void MakeMoves(CSquare& From, CSquare& To);   //makes moves for a single turn
+	void MakeMoves(CSquare& From, int Direction);   //makes moves for a single turn
+
+	void EndTurn();     //indicates to the engine that it has made its moves
 
 private:
-    ///================ STRATEGY
-    void _InitStrategy();
+	///================ STRATEGY
+	void _InitStrategy();
 
-    void _AssignMissions();
-    void _CreateMissions();
+	void _AssignMissions();
 
-    void _DefendHill();
+	void _FindFood();
 
-    void _AttackEnemyHills();
+	void _Explore();
 
-    /*
-    * On commence par la food ou par nos fourmis ?
-    */
-    void _FindFood();
+	///================ MISC
+	inline void _InitNearbyAllies();
+	inline void _InitNearbyEnemies();
+	inline void _InitFightAreas();
+	inline void _InitExploration();
 
-    /*
-    * Dans le cas où on ne détecte pas de bouf au début de la partie.
-    * On envoie la/les fourmi(s) en balade.
-    * C'est ici qu'on définira le comportement de "longer vers un mur" juste pour rien
-    */
-    void _Explore();
+	InternalMap<int, CAnt*> _GetCloseAnts(CSquare& Square);
 
-    /*
-    * En fonction du nombre de fourmis qu'on a.
-    * Si on a 3 fourmi (par exemple) ça sert à rien d'attaquer.
-    * Sinon on peut commencer l'exécution de la fonction.
-    * Voir pour les conditions sur combien de fourmi on envoie pour une attaque donnée (hill / enemies)
-    */
-    void _Attack();
+	// No enemy / My ant is there
+	// Check the area around the square
+	bool _IsSafe(CSquare& Square);
 
-    ///================ MISC
-    inline void _InitNearbyAllies();
-    inline void _InitNearbyEnemies();
-    inline void _InitFightAreas();
-    inline void _InitExploration();
+	bool _IsSuicide(CAnt& Ant, CSquare& Dest);
 
-    InternalMap<int, CAnt*> GetCloseAnts(CSquare& Square);
+	/**
+	* Pathfinding : A*
+	*/
 
-    // No enemy / My ant is there
-    // Check the area around the square
-    bool _IsSafe(CSquare& Square);
+	InternalArray<CSquare*> _AStar(CSquare& From, CSquare& To);
 
-    bool _IsSuicide(CAnt& Ant, CSquare& Dest);
+	bool _IsInSquareArray(const InternalArray<CSquare*> Arr, const CSquare& Square);
 
-    /**
-    * Pathfinding : A*
-    */
-
-    InternalArray<CSquare*> _AStar(CSquare& From, CSquare& To);
-
-    bool _IsInSquareArray(const InternalArray<CSquare*> Arr, const CSquare& Square);
-
-    // Manhattan distance
-    inline int _AStarHeuristic(const CSquare& S1, const CSquare& S2);
+	// Manhattan distance
+	inline int _AStarHeuristic(const CSquare& S1, const CSquare& S2);
 };

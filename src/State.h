@@ -18,55 +18,55 @@
 #include "Location.h"
 
 /*
-    constants
+	constants
 */
 const int TDIRECTIONS = 4;
-const char CDIRECTIONS[4] = {'N', 'E', 'S', 'W'};
+const char CDIRECTIONS[4] = { 'N', 'E', 'S', 'W' };
 const int DIRECTIONS[4][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };      //{N, E, S, W}
 
 /*
-    struct to store current state information
+	struct to store current state information
 */
 class CState
 {
 private:
-    bool _GameOver;
-    int64_t _Seed;
+	bool _GameOver;
+	int64_t _Seed;
 
 public:
-    int Rows, Cols;
-    int Turn, TotalTurns;
-    int NumberOfPlayers;
+	int Rows, Cols;
+	int Turn, TotalTurns;
+	int NumberOfPlayers;
 
-    double AttackRadius, SpawnRadius, ViewRadius;
-    
-    double LoadTime, TurnTime;
-    InternalArray<double> Scores;
-    //InternalArray<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
+	double AttackRadius, SpawnRadius, ViewRadius;
 
-    InternalArray<CSquare*> Foods;
-    InternalArray<CAnt*> MyAnts, EnemyAnts;
-    InternalArray<CSquare*> MyHills, EnemyHills;
+	double LoadTime, TurnTime;
+	InternalArray<double> Scores;
+	//InternalArray<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
 
-    ///================ DEBUG
-    CBug Bug;
-    InternalTimer Timer;
+	InternalArray<CSquare*> Foods;
+	InternalArray<CAnt*> MyAnts, EnemyAnts;
+	InternalArray<CSquare*> MyHills, EnemyHills;
+
+	///================ DEBUG
+	CBug Bug;
+	CCustomTimer Timer;
 
 public:
-    CState();
-    ~CState();
+	CState();
+	~CState();
 
-    void Setup();
-    void Reset();
+	void Setup();
+	void Reset();
 
-    void makeMove(SLocation &loc, int direction);
+	void MakeMove(SLocation& Loc, int Direction);
 
-    double Distance(const SLocation &loc1, const SLocation &loc2);
-    void SetLocation(SLocation & IOLocation, int Direction);
+	double Distance(const SLocation& Loc1, const SLocation& Loc2);
+	void SetLocation(SLocation& IOLocation, int Direction);
 
-    void UpdateVisionInformation();
+	void UpdateVisionInformation();
 
-    friend std::ostream& operator<<(std::ostream &os, const CState &state);
-    friend std::istream& operator>>(std::istream &is, CState &state);
+	friend std::ostream& operator<<(std::ostream& os, const CState& state);
+	friend std::istream& operator>>(std::istream& is, CState& state);
 };
 

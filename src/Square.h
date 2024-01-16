@@ -10,60 +10,54 @@ template<typename T>
 using InternalArray = std::vector<T>;
 
 /*
-    struct for representing a square in the grid.
+	struct for representing a square in the grid.
 */
 class CSquare
 {
 private:
-    static int SquareIDCounter;
+	static int _SquareIDCounter;
 
 public:
-    int ID;
-    bool IsVisible;
-    bool IsWater;
-    bool IsHill;
-    bool IsFood;
-    bool IsSafe;
-    bool IsEnemy;
+	int ID;
+	bool IsVisible;
+	bool IsWater;
+	bool IsHill;
+	bool IsFood;
+	bool IsSafe;
+	bool IsEnemy;
 
-    CAnt* AntPtr;
+	CAnt* AntPtr;
 
-    int AntPlayerId, HillPlayer;
+	int AntPlayerId, HillPlayer;
 
-    ///======================= FOR A*
-    int Dist;
-    int TotalCost;
-    CSquare* Parent;
-    CSquare* AreaCenter;
+	///======================= FOR A*
+	int Dist;
+	int TotalCost;
+	CSquare* Parent;
+	CSquare* AreaCenter;
 
-    //=======================
-    bool IsTargeted;
-    bool IsReached;
-    bool IsReachedByMyBot;
+	//=======================
+	bool IsReached;
 
-    int Row, Col;
+	int Row, Col;
 
-    CSquare* Previous;
-    CSquare* FoodSourceFinding;
+	CSquare* Previous;
+	CSquare* FoodSourceFinding;
 
-    ///======================= EXPLORATION
-    int ExplorationWeight;
-    InternalArray<CSquare*> Prevs;
+	///======================= EXPLORATION
+	int ExplorationWeight;
+	InternalArray<CSquare*> Prevs;
 
 public:
-    CSquare();
-    CSquare(int InRow, int InCol);
+	CSquare();
+	CSquare(int InRow, int InCol);
 
-    void Reset();
+	void Reset();
 
-    //EDirection GetDirectionTo(CSquare S);
+	InternalArray<CSquare*> GetNeighbors();
 
-    CSquare* GetNeighbours();
-
-    InternalArray<CSquare*> GetNeighbors();
-
-    bool operator==(const CSquare& Other) const
-    {
-        return (Row == Other.Row) && (Col == Other.Col);
-    }
+	bool operator==(const CSquare& Other) const
+	{
+		return (Row == Other.Row) && (Col == Other.Col);
+	}
 };

@@ -9,19 +9,13 @@ class CSquare;
 class CAnt
 {
 private:
-	static int MyAntIDCounter;
+	static int _MyAntIDCounter;
 	bool _DancingState = false;
 	EDirection _PreviousDirection = NORTH;
 
 public:
 	int ID;
 	SLocation Location;
-	bool IsAttacking;
-	bool IsDefending;
-	bool IsExploring;
-	bool IsDancing;
-	bool IsInDanger;
-	bool IsReallyInDanger;
 	int EnemyCount;
 	int AlliesCount;
 	bool IsEnemy;
@@ -40,15 +34,13 @@ public:
 	bool IsMyHill;
 
 public:
-	CAnt(SLocation location);
 	CAnt(int InRow, int InCol);
-	CAnt(CSquare* square);
+	CAnt(CSquare* Square);
 
-	void Attack();
-	void Defend();
-	EDirection Explore(CSquare square);
+	// Make the ant go in random directions
+	EDirection Explore();
 
 	// Make the ant switch between two squares
-	EDirection Dance(EDirection direction);
+	EDirection Dance(EDirection Direction);
 };
 

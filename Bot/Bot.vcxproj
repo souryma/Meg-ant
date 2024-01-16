@@ -24,6 +24,7 @@
     <ProjectGuid>{abc8c25d-f81a-4463-b2af-12b3065b7aec}</ProjectGuid>
     <RootNamespace>Bot</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Meg-antBot</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,10 +129,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Ant.h" />
-    <ClInclude Include="..\src\AntManager.h" />
     <ClInclude Include="..\src\Bot.h" />
     <ClInclude Include="..\src\Bug.h" />
-    <ClInclude Include="..\src\Direction.h" />
     <ClInclude Include="..\src\Location.h" />
     <ClInclude Include="..\src\Shared.h" />
     <ClInclude Include="..\src\Square.h" />
@@ -140,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Ant.cpp" />
-    <ClCompile Include="..\src\AntManager.cpp" />
     <ClCompile Include="..\src\Bot.cc" />
     <ClCompile Include="..\src\MyBot.cc" />
     <ClCompile Include="..\src\Shared.cpp" />
