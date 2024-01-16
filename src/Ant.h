@@ -9,8 +9,6 @@ class CSquare;
 class CAnt
 {
 private:
-	bool _DancingState = false;
-	EDirection _PreviousDirection = NORTH;
 
 public:
 	SLocation Location;
@@ -27,6 +25,10 @@ public:
 	CSquare* SquarePtr;
 	SMission* Mission;
 	bool HasMission;
+
+	// Contains the direction ant has moved the turn before
+	EDirection PreviousDirection = WEST;
+	bool _DancingState;
 
 public:
 	CAnt(SLocation location);

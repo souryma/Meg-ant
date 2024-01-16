@@ -37,13 +37,33 @@ void CState::Reset()
 };
 
 //outputs move information to the engine
-void CState::makeMove(const SLocation &loc, int direction)
+void CState::MakeMove(CAnt &ant, int direction)
 {
-    cout << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
+    cout << "o " << ant.Location.Row << " " << ant.Location.Col << " " << CDIRECTIONS[direction] << endl;
 
-    SLocation nLoc = GetLocation(loc, direction);
-    Grid[nLoc.Row][nLoc.Col].ant = Grid[loc.Row][loc.Col].ant;
-    Grid[loc.Row][loc.Col].ant = -1;
+    ant.PreviousDirection = (EDirection)direction;
+
+    SLocation nLoc = ant.Location;
+
+    // Get new location
+    switch (direction) {
+    case EAST: nLoc.Col += 1;
+        break;
+    case SOUTH: nLoc.Row += 1;
+        break;
+    case NORTH: nLoc.Row -= 1;
+        break;
+    case WEST: nLoc.Col -= 1;
+        break;
+    }
+
+    // Update the ant position on the grid
+    Grid[nLoc.Row][nLoc.Col].ant = Grid[ant.Location.Row][ant.Location.Col].ant;
+    Grid[ant.Location.Row][ant.Location.Col].ant = -1;
+
+    // Update the ant position in the ant object
+    if (Grid[nLoc.Row][nLoc.Col].IsWater == false)
+        ant.Location = nLoc;
 };
 
 //returns the euclidean distance between two locations with the edges wrapped
@@ -219,8 +239,8 @@ istream& operator>>(istream &is, CState &state)
             {
                 is >> row >> col;
                 state.Grid[row][col].IsFood = 1;
-                state.Grid[row][col].IsSafe = true;
                 state.Foods.push_back(CSquare(row, col));
+                state.Grid[row][col].IsSafe = true;
             }
             else if(inputType == "a") //live ant square
             {
@@ -256,6 +276,7 @@ istream& operator>>(istream &is, CState &state)
                 else
                     state.EnemyHills.push_back(CSquare(row, col));
 
+                state.Grid[row][col].IsSafe = true;
             }
             else if(inputType == "players") //player information
                 is >> state.NumberOfPlayers;

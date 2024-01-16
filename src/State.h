@@ -47,7 +47,13 @@ public:
     //InternalArray<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
 
     InternalArray<CSquare> Foods;
+
+    // Contains the ants detected this turn (reset between every turn)
     InternalArray<CAnt> MyAnts, EnemyAnts;
+
+    // Contains ants we know the role they have
+    InternalArray<CAnt> ExploringAnts;
+    
     InternalArray<CSquare> MyHills, EnemyHills;
 
     ///================ DEBUG
@@ -61,7 +67,7 @@ public:
     void Setup();
     void Reset();
 
-    void makeMove(const SLocation &loc, int direction);
+    void MakeMove(CAnt &ant, int direction);
 
     double Distance(const SLocation &loc1, const SLocation &loc2);
     SLocation GetLocation(const SLocation &startLoc, int direction);

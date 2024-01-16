@@ -17,17 +17,51 @@ CAnt::CAnt(int InRow, int InCol) {
 // Se dirige toujours vers l'EST si le chemin est libre
 EDirection CAnt::Explore(CSquare antSquare)
 {
-	if (antSquare.GetNeighbours()[0].IsSafe)
-		return EAST;
+	CSquare* neighbours = antSquare.GetNeighbours();
+	
+	// turn left each turn if able
 
-	if (antSquare.GetNeighbours()[1].IsSafe)
-		return SOUTH;
+	 //Get the direction the ant was heading the turn before
+	int neighbourDirection = PreviousDirection;
 
-	if (antSquare.GetNeighbours()[2].IsSafe)
-		return WEST;
+	// if all neighbours are available, go east
+	/*if (neighbours[0].IsSafe && neighbours[1].IsSafe && neighbours[2].IsSafe && neighbours[3].IsSafe)
+	{
+		if (neighbourDirection == 3)
+			neighbourDirection = 0;
+		else
+			neighbourDirection += 1;
 
-	if (antSquare.GetNeighbours()[3].IsSafe)
-		return NORTH;
+		return (EDirection)neighbourDirection;
+	}*/
+
+	for (int i = 0; i < 4; i++) {
+		if (neighbourDirection > 3)
+			neighbourDirection = 0;
+		else
+			neighbourDirection += 1;
+
+		if (neighbours[neighbourDirection].IsWater == false)
+		{
+			return (EDirection)neighbourDirection;
+		}
+	}
+
+	HasMoved = true;
+	return PreviousDirection;
+
+	//if (antSquare.GetNeighbours()[0].IsSafe)
+	//	return EAST;
+
+	//if (antSquare.GetNeighbours()[1].IsSafe)
+	//	return SOUTH;
+
+	//if (antSquare.GetNeighbours()[2].IsSafe)
+	//	return WEST;
+
+	//if (antSquare.GetNeighbours()[3].IsSafe)
+	//	return NORTH;
+
 }
 
 // Make the ant switch between two squares in the desired direction
@@ -36,7 +70,7 @@ EDirection CAnt::Dance(EDirection direction)
 	IsDancing = true;
 
 	// If the direction of dance is different than before, we reset dancing state
-	if (direction != _PreviousDirection)
+	if (direction != PreviousDirection)
 	{
 		_DancingState = true;
 	}
@@ -59,7 +93,7 @@ EDirection CAnt::Dance(EDirection direction)
 
 	_DancingState = !_DancingState;
 	HasMoved = true;
-	_PreviousDirection = direction;
+	PreviousDirection = direction;
 
 	return direction;
 }
