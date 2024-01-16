@@ -20,7 +20,7 @@
 class CBug
 {
 public:
-	std::ofstream file;
+	std::ofstream File;
 
 	CBug()
 	{
@@ -28,18 +28,18 @@ public:
 	};
 
 	//opens the specified file
-	inline void open(const std::string& filename)
+	inline void Open(const std::string& Filename)
 	{
 #ifdef DEBUG
-		file.open(filename.c_str());
+		File.open(Filename.c_str());
 #endif
 	};
 
 	//closes the ofstream
-	inline void close()
+	inline void Close()
 	{
 #ifdef DEBUG
-		file.close();
+		File.close();
 #endif
 	};
 };
@@ -48,7 +48,7 @@ public:
 inline CBug& operator<<(CBug& bug, std::ostream& (*manipulator)(std::ostream&))
 {
 #ifdef DEBUG
-	bug.file << manipulator;
+	bug.File << manipulator;
 #endif
 
 	return bug;
@@ -59,7 +59,7 @@ template <typename T>
 inline CBug& operator<<(CBug& bug, const T& t)
 {
 #ifdef DEBUG
-	bug.file << t;
+	bug.File << t;
 #endif
 
 	return bug;

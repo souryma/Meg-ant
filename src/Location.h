@@ -11,8 +11,8 @@ struct SLocation
 
 	friend CBug& operator<<(CBug& Bug, SLocation& L)
 	{
-		Bug.file << L.Row;
-		Bug.file << L.Col;
+		Bug.File << L.Row;
+		Bug.File << L.Col;
 
 		return Bug;
 	};

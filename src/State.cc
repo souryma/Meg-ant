@@ -7,13 +7,13 @@ CState::CState()
 {
 	_GameOver = 0;
 	Turn = 0;
-	Bug.open("./debug.txt");
+	Bug.Open("./debug.txt");
 };
 
 //deconstructor
 CState::~CState()
 {
-	Bug.close();
+	Bug.Close();
 };
 
 //sets the state up

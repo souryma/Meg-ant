@@ -16,16 +16,14 @@ void CBot::PlayGame()
 	State.Setup();
 	EndTurn();
 
-	CSquare s;
-
 	// Update
 	while (cin >> State)
 	{
 		State.UpdateVisionInformation();
 
-		_InitStrategy();
+		//_InitStrategy();
 
-		_FindFood();
+		//_FindFood();
 
 		//_Explore();
 

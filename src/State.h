@@ -50,7 +50,7 @@ public:
 
 	///================ DEBUG
 	CBug Bug;
-	InternalTimer Timer;
+	CCustomTimer Timer;
 
 public:
 	CState();

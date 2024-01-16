@@ -48,21 +48,21 @@ using InternalMap = std::unordered_map<T, U>;
 
 using namespace std::chrono;
 
-class InternalTimer
+class CCustomTimer
 {
 private:
-	time_point<high_resolution_clock> t1;
+	time_point<high_resolution_clock> _t1;
 
 public:
 	void Start()
 	{
-		t1 = high_resolution_clock::now();
+		_t1 = high_resolution_clock::now();
 	}
 
 	float Stop()
 	{
 		auto t2 = high_resolution_clock::now();
-		return (float)duration_cast<milliseconds>(t2 - t1).count();
+		return (float)duration_cast<milliseconds>(t2 - _t1).count();
 	}
 };
 
