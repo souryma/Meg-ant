@@ -19,7 +19,7 @@ CState::~CState()
 //sets the state up
 void CState::Setup()
 {
-    Grid = vector<vector<CSquare> >(Rows, vector<CSquare>(Cols, CSquare()));
+    SGlobal::Grid = InternalArray2D<CSquare*>(Rows, InternalArray<CSquare*>(Cols, new CSquare()));
 };
 
 //resets all non-water squares to land and clears the bots ant vector
@@ -30,20 +30,20 @@ void CState::Reset()
     MyHills.clear();
     EnemyHills.clear();
     Foods.clear();
-    for(int row=0; row<Rows; row++)
-        for(int col=0; col<Cols; col++)
-            if(!Grid[row][col].IsWater)
-                Grid[row][col].Reset();
+    for (int row = 0; row < Rows; row++)
+        for (int col = 0; col < Cols; col++)
+            if (!SGlobal::Grid[row][col]->IsWater)
+                SGlobal::Grid[row][col]->Reset();
 };
 
 //outputs move information to the engine
-void CState::makeMove(const SLocation &loc, int direction)
+void CState::makeMove(SLocation &loc, int direction)
 {
-    cout << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
+    Bug << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
 
-    SLocation nLoc = GetLocation(loc, direction);
-    Grid[nLoc.Row][nLoc.Col].ant = Grid[loc.Row][loc.Col].ant;
-    Grid[loc.Row][loc.Col].ant = -1;
+    SetLocation(loc, direction);
+    SGlobal::Grid[loc.Row][loc.Col]->AntPlayerId = SGlobal::Grid[loc.Row][loc.Col]->AntPlayerId;
+    SGlobal::Grid[loc.Row][loc.Col]->AntPlayerId = -1;
 };
 
 //returns the euclidean distance between two locations with the edges wrapped
@@ -57,11 +57,10 @@ double CState::Distance(const SLocation &loc1, const SLocation &loc2)
 };
 
 //returns the new location from moving in a given direction with the edges wrapped
-SLocation CState::GetLocation(const SLocation &loc, int direction)
+void CState::SetLocation(SLocation &IOLocation, int Direction)
 {
-    /*return SLocation( (loc.Row + DIRECTIONS[direction][0] + Rows) % Rows,
-                     (loc.Col + DIRECTIONS[direction][1] + Cols) % Cols );*/
-    return loc;
+    IOLocation.Row = (IOLocation.Row + DIRECTIONS[Direction][0] + Rows) % Rows;
+    IOLocation.Col = (IOLocation.Col + DIRECTIONS[Direction][1] + Cols) % Cols;
 };
 
 /*
@@ -76,15 +75,15 @@ SLocation CState::GetLocation(const SLocation &loc, int direction)
 void CState::UpdateVisionInformation()
 {
     std::queue<SLocation> locQueue;
-    SLocation sLoc, cLoc, nLoc;
+    SLocation sLoc, cLoc;
 
     for(int a=0; a<(int) MyAnts.size(); a++)
     {
-        sLoc = MyAnts[a].Location;
+        sLoc = MyAnts[a]->Location;
         locQueue.push(sLoc);
 
         std::vector<std::vector<bool> > visited(Rows, std::vector<bool>(Cols, 0));
-        Grid[sLoc.Row][sLoc.Col].IsVisible = 1;
+        SGlobal::Grid[sLoc.Row][sLoc.Col]->IsVisible = 1;
         visited[sLoc.Row][sLoc.Col] = 1;
 
         while(!locQueue.empty())
@@ -94,16 +93,16 @@ void CState::UpdateVisionInformation()
 
             for(int d=0; d<TDIRECTIONS; d++)
             {
-                nLoc = GetLocation(cLoc, d);
+                SetLocation(cLoc, d);
 
-                if(!visited[nLoc.Row][nLoc.Col] && Distance(sLoc, nLoc) <= ViewRadius)
+                if(!visited[cLoc.Row][cLoc.Col] && Distance(sLoc, cLoc) <= ViewRadius)
                 {
-                    Grid[nLoc.Row][nLoc.Col].IsVisible = 1;
-                    locQueue.push(nLoc);
+                    SGlobal::Grid[cLoc.Row][cLoc.Col]->IsVisible = 1;
+                    locQueue.push(cLoc);
 
                     // TODO : here we should fill the state.food / state.enemy / ... 
                 }
-                visited[nLoc.Row][nLoc.Col] = 1;
+                visited[cLoc.Row][cLoc.Col] = 1;
             }
         }
     }
@@ -121,15 +120,15 @@ ostream& operator<<(ostream &os, const CState &state)
     {
         for(int col=0; col<state.Cols; col++)
         {
-            if(state.Grid[row][col].IsWater)
+            if(SGlobal::Grid[row][col]->IsWater)
                 os << '%';
-            else if(state.Grid[row][col].IsFood)
+            else if(SGlobal::Grid[row][col]->IsFood)
                 os << '*';
-            else if(state.Grid[row][col].IsHill)
-                os << (char)('A' + state.Grid[row][col].hillPlayer);
-            else if(state.Grid[row][col].ant >= 0)
-                os << (char)('a' + state.Grid[row][col].ant);
-            else if(state.Grid[row][col].IsVisible)
+            else if(SGlobal::Grid[row][col]->IsHill)
+                os << (char)('A' + SGlobal::Grid[row][col]->HillPlayer);
+            else if(SGlobal::Grid[row][col]->AntPlayerId >= 0)
+                os << (char)('a' + SGlobal::Grid[row][col]->AntPlayerId);
+            else if(SGlobal::Grid[row][col]->IsVisible)
                 os << '.';
             else
                 os << '?';
@@ -172,10 +171,18 @@ istream& operator>>(istream &is, CState &state)
                 is >> state.LoadTime;
             else if(inputType == "turntime")
                 is >> state.TurnTime;
-            else if(inputType == "rows")
+            else if (inputType == "rows")
+            {
                 is >> state.Rows;
-            else if(inputType == "cols")
+                SGlobal::Rows = state.Rows;
+                state.Bug << "ROWS : " << SGlobal::Rows << endl;
+            }
+            else if (inputType == "cols")
+            {
                 is >> state.Cols;
+                SGlobal::Cols = state.Cols;
+                state.Bug << "COLS : " << SGlobal::Cols << endl;
+            }
             else if(inputType == "turns")
                 is >> state.TotalTurns;
             else if(inputType == "player_seed")
@@ -212,30 +219,40 @@ istream& operator>>(istream &is, CState &state)
             if(inputType == "w") //water square
             {
                 is >> row >> col;
-                state.Grid[row][col].IsWater = 1;
-                state.Grid[row][col].IsSafe = false;
+                SGlobal::Grid[row][col]->IsWater = true;
+                SGlobal::Grid[row][col]->IsSafe = false;
             }
             else if(inputType == "f") //food square
             {
                 is >> row >> col;
-                state.Grid[row][col].IsFood = 1;
-                state.Grid[row][col].IsSafe = true;
-                state.Foods.push_back(CSquare(row, col));
+                SGlobal::Grid[row][col]->IsFood = 1;
+                SGlobal::Grid[row][col]->IsSafe = true;
+
+                CSquare* square = new CSquare(row, col);
+                square->IsFood = true;
+
+                state.Foods.push_back(square);
             }
             else if(inputType == "a") //live ant square
             {
                 is >> row >> col >> player;
 
-                state.Grid[row][col].ant = player;
-                if (player == 0) 
+                CSquare* square = new CSquare(row, col);
+                CAnt* ant = new CAnt(row, col);
+
+                SGlobal::Grid[row][col]->AntPlayerId = player;
+                SGlobal::Grid[row][col]->AntPtr = ant;
+                square->AntPlayerId = player;
+
+                if (player == MY_PLAYER_ID)
                 {
-                    state.MyAnts.push_back(CAnt(row, col));
-                    state.Grid[row][col].IsSafe = true;
+                    state.MyAnts.push_back(ant);
+                    SGlobal::Grid[row][col]->IsSafe = true;
                 }
                 else 
                 {
-                    state.EnemyAnts.push_back(CAnt(row, col));
-                    state.Grid[row][col].IsSafe = false;
+                    state.EnemyAnts.push_back(ant);
+                    SGlobal::Grid[row][col]->IsSafe = false;
                 }
             }
             else if(inputType == "d") //dead ant square
@@ -243,18 +260,29 @@ istream& operator>>(istream &is, CState &state)
                 // Is not really useful I think
 
                 //is >> row >> col >> player;
-                //state.grid[row][col].deadAnts.push_back(player);
+                //state.SGlobal::Grid[row][col].deadAnts.push_back(player);
             }
             else if(inputType == "h")
             {
                 is >> row >> col >> player;
-                state.Grid[row][col].IsHill = 1;
-                state.Grid[row][col].hillPlayer = player;
+                SGlobal::Grid[row][col]->IsHill = 1;
+                SGlobal::Grid[row][col]->HillPlayer = player;
 
-                if(player == 0)
-                    state.MyHills.push_back(CSquare(row, col));
+                CSquare* square = new CSquare(row, col);
+                square->IsHill = true;
+
+                if (player == MY_PLAYER_ID)
+                {
+                    square->HillPlayer = MY_PLAYER_ID;
+
+                    state.MyHills.push_back(square);
+                }
                 else
-                    state.EnemyHills.push_back(CSquare(row, col));
+                {
+                    square->HillPlayer = -1;
+
+                    state.EnemyHills.push_back(new CSquare(row, col));
+                }
 
             }
             else if(inputType == "players") //player information

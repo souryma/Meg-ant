@@ -1,28 +1,40 @@
 #pragma once
 
+#include <set>
 #include <vector>
 
 // Forward declarations
 class CAnt;
+
+template<typename T>
+using InternalArray = std::vector<T>;
 
 /*
     struct for representing a square in the grid.
 */
 class CSquare
 {
+private:
+    static int SquareIDCounter;
+
 public:
+    int ID;
     bool IsVisible;
     bool IsWater;
     bool IsHill;
     bool IsFood;
     bool IsSafe;
+    bool IsEnemy;
 
     CAnt* AntPtr;
 
-    int ant, hillPlayer;
+    int AntPlayerId, HillPlayer;
 
-    //======================= FOR A*
-    int F; // only for food
+    ///======================= FOR A*
+    int Dist;
+    int TotalCost;
+    CSquare* Parent;
+    CSquare* AreaCenter;
 
     //=======================
     bool IsTargeted;
@@ -30,6 +42,9 @@ public:
     bool IsReachedByMyBot;
 
     int Row, Col;
+
+    CSquare* Previous;
+    CSquare* FoodSourceFinding;
 
     ///======================= EXPLORATION
     int ExplorationWeight;
@@ -43,6 +58,8 @@ public:
     //EDirection GetDirectionTo(CSquare S);
 
     CSquare* GetNeighbours();
+
+    InternalArray<CSquare*> GetNeighbors();
 
     bool operator==(const CSquare& Other) const
     {

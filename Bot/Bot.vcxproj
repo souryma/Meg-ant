@@ -143,6 +143,7 @@
     <ClCompile Include="..\src\AntManager.cpp" />
     <ClCompile Include="..\src\Bot.cc" />
     <ClCompile Include="..\src\MyBot.cc" />
+    <ClCompile Include="..\src\Shared.cpp" />
     <ClCompile Include="..\src\Square.cpp" />
     <ClCompile Include="..\src\State.cc" />
   </ItemGroup>

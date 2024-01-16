@@ -1,15 +1,29 @@
 #include "Square.h"
+#include "Shared.h"
+
+// Static members
+int CSquare::SquareIDCounter = 0;
 
 CSquare::CSquare()
 {
+    ID = ++SquareIDCounter;
+
 	IsVisible = IsWater = IsHill = IsFood = 0;
     IsSafe = true;
-	ant = hillPlayer = -1;
-
+	AntPlayerId = HillPlayer = -1;
+    IsEnemy = false;
 	IsReached = false;
 	IsReachedByMyBot = false;
 
     ExplorationWeight = 100;
+
+    // For A*
+    Dist = 0;
+    TotalCost = 0;
+    Parent = nullptr;
+
+    Previous = nullptr;
+    FoodSourceFinding = nullptr;
 }
 
 CSquare::CSquare(int InRow, int InCol)
@@ -24,7 +38,7 @@ void CSquare::Reset()
     IsVisible = 0;
     IsHill = 0;
     IsFood = 0;
-    ant = hillPlayer = -1;
+    AntPlayerId = HillPlayer = -1;
 }
 
 
@@ -55,4 +69,16 @@ CSquare* CSquare::GetNeighbours()
     neighbours[3] = CSquare(Row-1, Col);
 
     return neighbours;
+}
+
+InternalArray<CSquare*> CSquare::GetNeighbors()
+{
+    InternalArray<CSquare*> neighbors;
+
+    neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col + 1 + SGlobal::Cols) % SGlobal::Cols]);
+    neighbors.push_back(SGlobal::Grid[(Row + 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
+    neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col - 1 + SGlobal::Cols) % SGlobal::Cols]);
+    neighbors.push_back(SGlobal::Grid[(Row - 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
+
+    return neighbors;
 }

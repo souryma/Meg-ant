@@ -42,13 +42,11 @@ public:
     
     double LoadTime, TurnTime;
     InternalArray<double> Scores;
-
-    InternalArray2D<CSquare> Grid;
     //InternalArray<Location> myAnts, enemyAnts, myHills, enemyHills, food, exploringAnts, defendinAnts, targetedFoods;
 
-    InternalArray<CSquare> Foods;
-    InternalArray<CAnt> MyAnts, EnemyAnts;
-    InternalArray<CSquare> MyHills, EnemyHills;
+    InternalArray<CSquare*> Foods;
+    InternalArray<CAnt*> MyAnts, EnemyAnts;
+    InternalArray<CSquare*> MyHills, EnemyHills;
 
     ///================ DEBUG
     CBug Bug;
@@ -61,10 +59,10 @@ public:
     void Setup();
     void Reset();
 
-    void makeMove(const SLocation &loc, int direction);
+    void makeMove(SLocation &loc, int direction);
 
     double Distance(const SLocation &loc1, const SLocation &loc2);
-    SLocation GetLocation(const SLocation &startLoc, int direction);
+    void SetLocation(SLocation & IOLocation, int Direction);
 
     void UpdateVisionInformation();
 
