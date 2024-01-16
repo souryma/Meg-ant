@@ -6,38 +6,38 @@ int CSquare::SquareIDCounter = 0;
 
 CSquare::CSquare()
 {
-    ID = ++SquareIDCounter;
+	ID = ++SquareIDCounter;
 
 	IsVisible = IsWater = IsHill = IsFood = 0;
-    IsSafe = true;
+	IsSafe = true;
 	AntPlayerId = HillPlayer = -1;
-    IsEnemy = false;
+	IsEnemy = false;
 	IsReached = false;
 
-    ExplorationWeight = 100;
+	ExplorationWeight = 100;
 
-    // For A*
-    Dist = 0;
-    TotalCost = 0;
-    Parent = nullptr;
+	// For A*
+	Dist = 0;
+	TotalCost = 0;
+	Parent = nullptr;
 
-    Previous = nullptr;
-    FoodSourceFinding = nullptr;
+	Previous = nullptr;
+	FoodSourceFinding = nullptr;
 }
 
 CSquare::CSquare(int InRow, int InCol)
 {
-    CSquare();
-    Row = InRow;
-    Col = InCol;
+	CSquare();
+	Row = InRow;
+	Col = InCol;
 }
 
 void CSquare::Reset()
 {
-    IsVisible = 0;
-    IsHill = 0;
-    IsFood = 0;
-    AntPlayerId = HillPlayer = -1;
+	IsVisible = 0;
+	IsHill = 0;
+	IsFood = 0;
+	AntPlayerId = HillPlayer = -1;
 }
 
 
@@ -59,12 +59,12 @@ void CSquare::Reset()
 
 InternalArray<CSquare*> CSquare::GetNeighbors()
 {
-    InternalArray<CSquare*> neighbors;
+	InternalArray<CSquare*> neighbors;
 
-    neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col + 1 + SGlobal::Cols) % SGlobal::Cols]);
-    neighbors.push_back(SGlobal::Grid[(Row + 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
-    neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col - 1 + SGlobal::Cols) % SGlobal::Cols]);
-    neighbors.push_back(SGlobal::Grid[(Row - 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
+	neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col + 1 + SGlobal::Cols) % SGlobal::Cols]);
+	neighbors.push_back(SGlobal::Grid[(Row + 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
+	neighbors.push_back(SGlobal::Grid[(Row + 0 + SGlobal::Rows) % SGlobal::Rows][(Col - 1 + SGlobal::Cols) % SGlobal::Cols]);
+	neighbors.push_back(SGlobal::Grid[(Row - 1 + SGlobal::Rows) % SGlobal::Rows][(Col + 0 + SGlobal::Cols) % SGlobal::Cols]);
 
-    return neighbors;
+	return neighbors;
 }

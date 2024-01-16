@@ -31,9 +31,9 @@ void CBot::PlayGame()
 
 		// AssignMissions();
 
+		// Move in a random direction
 		for (auto ant : State.MyAnts)
 		{
-			State.Bug << "Ant explore : " << ant->Explore() << endl;
 			MakeMoves(*ant->SquarePtr, ant->Explore());
 		}
 
@@ -44,15 +44,11 @@ void CBot::PlayGame()
 //makes the CBots moves for the turn
 void CBot::MakeMoves(CSquare& From, CSquare& To)
 {
-	State.Bug << "Make move" << endl;
-
-	SLocation loc;
-	loc.Row = From.Row;
-	loc.Col = From.Col;
-	State.MakeMove(loc, CUtilityFunctions::GetDirectionFromMovement(From, To));
+	MakeMoves(From, CUtilityFunctions::GetDirectionFromMovement(From, To));
 };
 
-void CBot::MakeMoves(CSquare& From, EDirection Direction)
+//makes the CBots moves for the turn
+void CBot::MakeMoves(CSquare& From, int Direction)
 {
 	State.Bug << "Make move" << endl;
 
@@ -170,7 +166,7 @@ void CBot::_FindFood()
 		else if (
 			currentSquare->AntPlayerId == MY_PLAYER_ID && (currentSquare->AntPtr != nullptr && !currentSquare->AntPtr->HasMoved) &&
 			(currentSquare->Previous == nullptr || currentSquare->Previous->AntPlayerId != MY_PLAYER_ID) && !_IsSuicide(*currentSquare->AntPtr, *currentSquare->Previous)
-		)
+			)
 		{
 
 			State.Bug << "B" << endl;
@@ -182,7 +178,7 @@ void CBot::_FindFood()
 			}
 			else {
 				if (!_IsSafe(*currentSquare->Previous)) {
-					
+
 					InternalMap<int, CAnt*> closeAnts = GetCloseAnts(*currentSquare->FoodSourceFinding);
 
 					bool IsHavingSupport = false;
@@ -236,7 +232,7 @@ void CBot::_FindFood()
 			for (auto neighbor : currentSquare->GetNeighbors()) {
 				if (neighbor->IsReached)
 					continue;
-				
+
 				neighbor->IsReached = true;
 				neighbor->Previous = currentSquare;
 				neighbor->Dist = currentSquare->Dist + 1;
@@ -286,7 +282,7 @@ void CBot::_Explore()
 
 			for (auto neighbor : currentSquare->GetNeighbors()) {
 				if (neighbor->IsReached) {
-					
+
 					if (neighbor->Dist == currentSquare->Dist + 1) {
 						neighbor->Prevs.push_back(*neighbor->Prevs.end());
 						neighbor->Prevs.push_back(*currentSquare->Prevs.begin());
@@ -297,7 +293,7 @@ void CBot::_Explore()
 				neighbor->IsReached = true;
 				neighbor->Previous = currentSquare;
 				neighbor->Dist = currentSquare->Dist + 1;
-				neighbor->Prevs.push_back(*neighbor->Prevs.end()); 
+				neighbor->Prevs.push_back(*neighbor->Prevs.end());
 				neighbor->Prevs.push_back(*currentSquare->Prevs.begin());
 				neighbor->Prevs.push_back(*currentSquare->Prevs.end());
 				exploredSquares.push_back(neighbor);
@@ -407,7 +403,7 @@ inline void CBot::_InitNearbyEnemies()
 
 inline void CBot::_InitFightAreas()
 {
-	
+
 }
 
 inline void CBot::_InitExploration()
@@ -421,7 +417,7 @@ inline void CBot::_InitExploration()
 	for (auto square : squaresToExplore) {
 		square->Dist = 0;
 		square->IsReached = true;
-		square->AreaCenter= square;
+		square->AreaCenter = square;
 		exploratedSquares.push_back(square);
 	}
 
@@ -434,7 +430,7 @@ inline void CBot::_InitExploration()
 		currentSquare->ExplorationWeight = 0;
 		for (auto neighbor : currentSquare->GetNeighbors()) {
 
-			if (neighbor->IsReached) 
+			if (neighbor->IsReached)
 				continue;
 
 			neighbor->IsReached = true;
@@ -502,7 +498,7 @@ bool CBot::_IsSuicide(CAnt& Ant, CSquare& Dest)
 	for (auto enemyAnt : Ant.CloserEnemies) {
 		if (CUtilityFunctions::IsTooCloseTo(*enemyAnt->SquarePtr, Dest))
 			return true;
-		
+
 		if (CUtilityFunctions::IsCloseTo(*enemyAnt->SquarePtr, Dest))
 			return false;
 	}
