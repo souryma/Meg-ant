@@ -59,7 +59,7 @@ public:
     void Setup();
     void Reset();
 
-    void makeMove(SLocation &loc, int direction);
+    void MakeMove(SLocation &loc, int direction);
 
     double Distance(const SLocation &loc1, const SLocation &loc2);
     void SetLocation(SLocation & IOLocation, int Direction);

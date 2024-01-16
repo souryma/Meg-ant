@@ -21,18 +21,14 @@ public:
     void PlayGame();    //plays a single game of Ants
 
     void MakeMoves(CSquare& From, CSquare& To);   //makes moves for a single turn
-    void endTurn();     //indicates to the engine that it has made its moves
+    void MakeMoves(CSquare& From, EDirection Direction);   //makes moves for a single turn
+    void EndTurn();     //indicates to the engine that it has made its moves
 
 private:
     ///================ STRATEGY
     void _InitStrategy();
 
     void _AssignMissions();
-    void _CreateMissions();
-
-    void _DefendHill();
-
-    void _AttackEnemyHills();
 
     /*
     * On commence par la food ou par nos fourmis ?
@@ -45,14 +41,6 @@ private:
     * C'est ici qu'on définira le comportement de "longer vers un mur" juste pour rien
     */
     void _Explore();
-
-    /*
-    * En fonction du nombre de fourmis qu'on a.
-    * Si on a 3 fourmi (par exemple) ça sert à rien d'attaquer.
-    * Sinon on peut commencer l'exécution de la fonction.
-    * Voir pour les conditions sur combien de fourmi on envoie pour une attaque donnée (hill / enemies)
-    */
-    void _Attack();
 
     ///================ MISC
     inline void _InitNearbyAllies();

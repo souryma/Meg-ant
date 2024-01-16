@@ -14,7 +14,7 @@ void CBot::PlayGame()
 	// Init
 	cin >> State;
 	State.Setup();
-	endTurn();
+	EndTurn();
 
 	CSquare s;
 
@@ -27,20 +27,17 @@ void CBot::PlayGame()
 
 		_FindFood();
 
-		_Explore();
+		//_Explore();
 
-		// CreateMissions();
 		// AssignMissions();
-		// DefendHill();
-		// Attack();
 
-		/*for (CAnt ant : State.MyAnts)
+		for (auto ant : State.MyAnts)
 		{
-			ant.IsExploring = true;
-		}*/
+			State.Bug << "Ant explore : " << ant->Explore() << endl;
+			MakeMoves(*ant->SquarePtr, ant->Explore());
+		}
 
-		// Dance();
-		endTurn();
+		EndTurn();
 	}
 };
 
@@ -52,11 +49,21 @@ void CBot::MakeMoves(CSquare& From, CSquare& To)
 	SLocation loc;
 	loc.Row = From.Row;
 	loc.Col = From.Col;
-	State.makeMove(loc, CUtilityFunctions::GetDirectionFromMovement(From, To));
+	State.MakeMove(loc, CUtilityFunctions::GetDirectionFromMovement(From, To));
+};
+
+void CBot::MakeMoves(CSquare& From, EDirection Direction)
+{
+	State.Bug << "Make move" << endl;
+
+	SLocation loc;
+	loc.Row = From.Row;
+	loc.Col = From.Col;
+	State.MakeMove(loc, Direction);
 };
 
 //finishes the turn
-void CBot::endTurn()
+void CBot::EndTurn()
 {
 	if (State.Turn > 0)
 		State.Reset();
@@ -102,33 +109,6 @@ void CBot::_AssignMissions()
 			++it;
 		}
 	}
-}
-
-void CBot::_CreateMissions()
-{
-	//for (CAnt ant : State.MyAnts)
-	//{
-	//	if (ant.HasMission) continue; // Verifier si la mission est bonne
-
-	//	CSquare targetSquare;
-	//	
-	//	
-	//	
-	//}
-
-	// Analyser les foods
-	// Analyser les enemies
-	// Analyser les alliés
-	// Analyser les 
-
-}
-
-void CBot::_DefendHill()
-{
-}
-
-void CBot::_AttackEnemyHills()
-{
 }
 
 void CBot::_FindFood()
@@ -284,19 +264,6 @@ void CBot::_Explore()
 		antSquare->Dist = 0;
 		exploredSquares.push_back(antSquare);
 
-		// Do nothing if the ant is not exploring
-		//if (ant.IsExploring == false)
-		//	return;
-
-		//State.Bug << "Ant explore : " << ant.Explore(State.Grid[ant.Location.Row][ant.Location.Col]) << endl;
-		//State.Bug << "Ant safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col].IsSafe << endl;
-		//State.Bug << "Ant EAST safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col - 1].IsSafe << endl;
-		//State.Bug << "Ant WEST safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col + 1].IsSafe << endl;
-		//CSquare* sq = SGlobal::Grid[ant->Location.Row][ant->Location.Col + 1]->GetNeighbours();
-		//State.Bug << "Ant neighbour : " << *sq.IsFood << endl;
-		//State.makeMove(ant.Location, ant.Explore(State.Grid[ant.Location.Row][ant.Location.Col]));
-
-
 		for (auto neighbor : antSquare->GetNeighbors()) {
 			values.insert({ neighbor, 0 });
 			squaresToExplore.push_back(neighbor);
@@ -366,10 +333,6 @@ void CBot::_Explore()
 
 		MakeMoves(*antSquare, *bestDest);
 	}
-}
-
-void CBot::_Attack()
-{
 }
 
 inline void CBot::_InitNearbyAllies()

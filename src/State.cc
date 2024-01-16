@@ -37,9 +37,10 @@ void CState::Reset()
 };
 
 //outputs move information to the engine
-void CState::makeMove(SLocation &loc, int direction)
+void CState::MakeMove(SLocation &loc, int direction)
 {
     Bug << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
+    cout << "o " << loc.Row << " " << loc.Col << " " << CDIRECTIONS[direction] << endl;
 
     SetLocation(loc, direction);
     SGlobal::Grid[loc.Row][loc.Col]->AntPlayerId = SGlobal::Grid[loc.Row][loc.Col]->AntPlayerId;
