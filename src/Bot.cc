@@ -304,18 +304,18 @@ void CBot::_FindFood()
 
 void CBot::_Explore()
 {
-	for (CAnt ant : State.MyAnts)
+	for (auto ant : State.MyAnts)
 	{
 		// Do nothing if the ant is not exploring
-		if (ant.IsExploring == false)
-			return;
+		//if (ant.IsExploring == false)
+		//	return;
 
 		//State.Bug << "Ant explore : " << ant.Explore(State.Grid[ant.Location.Row][ant.Location.Col]) << endl;
 		//State.Bug << "Ant safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col].IsSafe << endl;
 		//State.Bug << "Ant EAST safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col - 1].IsSafe << endl;
 		//State.Bug << "Ant WEST safe ? : " << State.Grid[ant.Location.Row][ant.Location.Col + 1].IsSafe << endl;
-		CSquare* sq = State.Grid[ant.Location.Row][ant.Location.Col + 1].GetNeighbours();
-		State.Bug << "Ant neighbour : " << *sq.IsFood << endl;
+		//CSquare* sq = SGlobal::Grid[ant->Location.Row][ant->Location.Col + 1]->GetNeighbours();
+		//State.Bug << "Ant neighbour : " << *sq.IsFood << endl;
 		//State.makeMove(ant.Location, ant.Explore(State.Grid[ant.Location.Row][ant.Location.Col]));
 	}
 }

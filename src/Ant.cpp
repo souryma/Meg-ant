@@ -60,7 +60,7 @@ EDirection CAnt::Explore(CSquare antSquare)
 	// turn left each turn if able
 
 	 //Get the direction the ant was heading the turn before
-	int neighbourDirection = PreviousDirection;
+	int neighbourDirection = _PreviousDirection;
 
 	// if all neighbours are available, go east
 	/*if (neighbours[0].IsSafe && neighbours[1].IsSafe && neighbours[2].IsSafe && neighbours[3].IsSafe)
@@ -86,7 +86,7 @@ EDirection CAnt::Explore(CSquare antSquare)
 	}
 
 	HasMoved = true;
-	return PreviousDirection;
+	return _PreviousDirection;
 
 	//if (antSquare.GetNeighbours()[0].IsSafe)
 	//	return EAST;
@@ -108,7 +108,7 @@ EDirection CAnt::Dance(EDirection direction)
 	IsDancing = true;
 
 	// If the direction of dance is different than before, we reset dancing state
-	if (direction != PreviousDirection)
+	if (direction != _PreviousDirection)
 	{
 		_DancingState = true;
 	}
@@ -131,7 +131,7 @@ EDirection CAnt::Dance(EDirection direction)
 
 	_DancingState = !_DancingState;
 	HasMoved = true;
-	PreviousDirection = direction;
+	_PreviousDirection = direction;
 
 	return direction;
 }
